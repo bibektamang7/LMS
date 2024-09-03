@@ -1,113 +1,290 @@
+"use client";
+import Slider from "@/components/Slider";
 import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+import FAQWedget from "@/components/FAQWedget";
+import Typewriter from "@/components/TypeWriter";
 
-export default function Home() {
+const testimonials = [
+  {
+    name: "Alice Johnson",
+    role: "Software Engineer",
+    testimonial:
+      "This platform has significantly boosted my career. The courses are well-structured, and the mentors are extremely knowledgeable.",
+    image: "/images/person.avif",
+  },
+  {
+    name: "Michael Brown",
+    role: "Data Scientist",
+    testimonial:
+      "I've gained practical skills that I apply in my daily work. The learning experience here is unmatched.",
+    image: "/images/person1.avif",
+  },
+  {
+    name: "Sarah Williams",
+    role: "UX Designer",
+    testimonial:
+      "The interactive learning modules and the support from the community have been amazing. Highly recommended!",
+    image: "/images/person2.avif",
+  },
+];
+
+const words = ["Practical", "Better", "Web"];
+
+const Page = () => {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
+    <div>
+      <div className="px-4 md:!px-6 max-w-[1248px] xl:!mx-auto py-3 relative ">
+        <div className="flex-center flex-col-reverse lg:flex-row w-full relative z-10 gap-y-10 lg:!gap-x-10">
+          <header className="flex-center flex-col w-full text-center">
+            <h1 className="text-2xl leading-9 font-bold flex flex-col justify-center lg:!justify-start flex-wrap text-gray-900 lg:!self-start">
+              Learning with StepOne made &nbsp;
+              <div className="flex lg:!inline-flex text-primary-500 flex-wrap break-all justify-center lg:!justify-start">
+                <strong className="inline-block">&lt;</strong>
+                <div
+                  className="Typewriter"
+                  data-testid="typewrite-wrapper"
+                >
+                  <Typewriter words={words} />
+                  <span className="">|</span>
+                </div>
+                <strong className="inline-block">&gt;</strong>
+              </div>
+            </h1>
+            <h6 className="!text-base md:!text-lg leading-6 md:!leading-[26px] font-light text-gray-850 text-center lg:!text-left mt-4 lg:!w-[90%] lg:!self-start">
+              Take your career to the next level with industry ready programs,
+              <br className="hidden xl:!block" />
+              An entire learing ecosystem at your fingertips to make learning
+              fun.
+              <br className="hidden xl:!block" />
+              Choose from a range of tech programs and make your next big career
+              switch.
+            </h6>
+            <Link
+              href="/courses"
+              className="button mt-9 self-start w-full lg:!w-fit"
+            >
+              Explore Courses
+            </Link>
+          </header>
+          <div>
             <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
+              src="/images/test.png"
+              alt="hero image"
+              width={300}
+              height={300}
+              className="lg:w-[900px] lg:h-[480px]"
             />
-          </a>
+          </div>
         </div>
+
+        <div className="flex flex-col sm:!flex-row items-center justify-center lg:!justify-between gap-y-6 pt-8 lg:pt-8 flex-wrap lg:flex-nowrap gap-x-3 relative z-10">
+          <div className="rounded-lg p-[14px] m-2 flex items-center justify-start py-6 px-6 shadow-md bg-white gap-x-4 w-full md:!w-72 lg:!w-[23%] lg:!self-start">
+            <Image
+              src="/icons/course.png"
+              alt="course book icon"
+              width={48}
+              height={48}
+              className="w-12 h-12"
+              loading="lazy"
+              style={{ color: "transparent" }}
+            />
+            <div>
+              <h4 className="text-lg md:!text-xl leading-[26px] md:!leading-[30px] font-bold text-gray-800">
+                200+
+              </h4>
+              <p className="text-xs md:!text-sm leading-[18px] md:!leading-[22px] font-normal text-gray-800">
+                Different Courses
+              </p>
+            </div>
+          </div>
+          <div className="rounded-lg p-[14px] m-2 flex items-center justify-start py-6 px-6 shadow-md bg-white gap-x-4 w-full md:!w-72 lg:!w-[23%] lg:!self-start">
+            <Image
+              src="/icons/community.png"
+              alt="community icon"
+              width={48}
+              height={48}
+              className="w-12 h-12"
+              loading="lazy"
+              style={{ color: "transparent" }}
+            />
+            <div>
+              <h4 className="text-lg md:!text-xl leading-[26px] md:!leading-[30px] font-bold text-gray-800">
+                67%
+              </h4>
+              <p className="text-xs md:!text-sm leading-[18px] md:!leading-[22px] font-normal text-gray-800">
+                Communtiy growth
+              </p>
+            </div>
+          </div>
+          <div className="rounded-lg p-[14px] m-2 flex items-center justify-start py-6 px-6 shadow-md bg-white gap-x-4 w-full md:!w-72 lg:!w-[23%] lg:!self-start">
+            <Image
+              src="/icons/transition.webp"
+              alt="career transition icon"
+              width={48}
+              height={48}
+              className="w-12 h-12"
+              loading="lazy"
+              style={{ color: "transparent" }}
+            />
+            <div>
+              <h4 className="text-lg md:!text-xl leading-[26px] md:!leading-[30px] font-bold text-gray-800">
+                20000+
+              </h4>
+              <p className="text-xs md:!text-sm leading-[18px] md:!leading-[22px] font-normal text-gray-800">
+                Career Transitions
+              </p>
+            </div>
+          </div>
+          <div className="rounded-lg p-[14px] m-2 flex items-center justify-start py-6 px-6 shadow-md bg-white gap-x-4 w-full md:!w-72 lg:!w-[23%] lg:!self-start">
+            <Image
+              src="/icons/resource.png"
+              alt="resource image"
+              width={48}
+              height={48}
+              className="w-12 h-12"
+              loading="lazy"
+              style={{ color: "transparent" }}
+            />
+            <div>
+              <h4 className="text-lg md:!text-xl leading-[26px] md:!leading-[30px] font-bold text-gray-800">
+                1000+
+              </h4>
+              <p className="text-xs md:!text-sm leading-[18px] md:!leading-[22px] font-normal text-gray-800">
+                Resources
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* courses */}
+        <div className="mt-16">
+          <h1 className="heading !pb-0 !mb-3">Most Popular Courses</h1>
+          <p className="text-gray-600">Choose from hundreds of courses from specialist mentors</p>
+          <Slider />
+        </div>
+        {/* why stepOne */}
+        <section className="py-12 bg-white mt-16">
+          <div className="container mx-auto px-6">
+            <h2 className="heading">Why Choose Us?</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="flex flex-col items-center text-center p-6 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                <Image
+                  src="/icons/bookmark.png"
+                  alt="Expert Mentors"
+                  width={80}
+                  height={80}
+                  className="mb-4"
+                />
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  Expert Mentors
+                </h3>
+                <p className="text-gray-600">
+                  Learn from industry experts who bring real-world experience to
+                  the table.
+                </p>
+              </div>
+              <div className="flex flex-col items-center text-center p-6 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                <Image
+                  src="/icons/book.png"
+                  alt="Certified Courses"
+                  width={80}
+                  height={80}
+                  className="mb-4"
+                />
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  Certified Courses
+                </h3>
+                <p className="text-gray-600">
+                  Our courses are accredited and recognized by leading
+                  institutions.
+                </p>
+              </div>
+              <div className="flex flex-col items-center text-center p-6 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                <Image
+                  src="/icons/learning.webp"
+                  alt="Flexible Learning"
+                  width={80}
+                  height={80}
+                  className="mb-4"
+                />
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  Flexible Learning
+                </h3>
+                <p className="text-gray-600">
+                  Access courses anytime, anywhere, with our flexible learning
+                  options.
+                </p>
+              </div>
+              <div className="flex flex-col items-center text-center p-6 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                <Image
+                  src="/icons/message.png"
+                  alt="Community Support"
+                  width={80}
+                  height={80}
+                  className="mb-4"
+                />
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  Community Support
+                </h3>
+                <p className="text-gray-600">
+                  Join a community of learners and get support from peers and
+                  mentors.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        {/* Testimonial */}
+        <section className="py-16 mt-12 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+                What Our Students Say
+              </h2>
+              <p className="text-lg leading-6 text-gray-500 mt-4">
+                Hear from those who have transformed their careers with our
+                platform.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {testimonials.map((testimonial, index) => (
+                <div
+                  key={index}
+                  className="p-8 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
+                >
+                  <div className="flex items-center mb-6">
+                    <Image
+                      src={testimonial.image}
+                      alt={testimonial.name}
+                      width={60}
+                      height={60}
+                      className="w-14 h-14 rounded-full object-cover"
+                    />
+                    <div className="ml-4">
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {testimonial.name}
+                      </h3>
+                      <p className="text-sm text-gray-500">
+                        {testimonial.role}
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-medium leading-6 text-gray-500">
+                    {testimonial.testimonial}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* FAQS */}
+        <FAQWedget />
       </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </div>
   );
-}
+};
+
+export default Page;
