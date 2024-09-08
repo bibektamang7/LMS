@@ -1,72 +1,63 @@
 'use client'
-
-import React, { useState } from 'react';
-import CourseCard from './CourseCard';
-import CourseFilter, { FilterOptions } from './CourseFilter';
-import Pagination from './Pagination';
-
-type Course = {
-  id: number;
-  title: string;
-  category: string;
-  level: string;
-  price: number;
-  imageUrl: string;
-};
+import React, { useState, useEffect } from 'react';
+import { Course } from '@/types/Course';
 
 type CourseListProps = {
   courses: Course[];
-  filterOptions: FilterOptions;
 };
 
-const CourseList: React.FC<CourseListProps> = ({ courses, filterOptions }) => {
+const CourseList: React.FC<CourseListProps> = ({ courses }) => {
+  const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedFilters, setSelectedFilters] = useState<Partial<FilterOptions>>({});
-  const coursesPerPage = 10;
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
+  const coursesPerPage = 6;
 
-  const filteredCourses = courses.filter((course) => {
-    const categoryMatch = selectedFilters.category
-      ? selectedFilters.category.includes(course.category)
-      : true;
-    const levelMatch = selectedFilters.level
-      ? selectedFilters.level.includes(course.level)
-      : true;
-    return categoryMatch && levelMatch;
-  });
+  // Filter the courses based on selected category and level
+  useEffect(() => {
+    const filtered = courses.filter((course) =>
+      (selectedCategory === null || course.category === selectedCategory) &&
+      (selectedLevel === null || course.level === selectedLevel)
+    );
+    setFilteredCourses(filtered);
+    setCurrentPage(1); // Reset to the first page after filtering
+  }, [courses, selectedCategory, selectedLevel]);
 
-  const paginatedCourses = filteredCourses.slice(
-    (currentPage - 1) * coursesPerPage,
-    currentPage * coursesPerPage
-  );
+  // Pagination logic
+  const indexOfLastCourse = currentPage * coursesPerPage;
+  const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
+  const currentCourses = filteredCourses.slice(indexOfFirstCourse, indexOfLastCourse);
 
-  const totalPages = Math.ceil(filteredCourses.length / coursesPerPage);
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
-    <div className="flex">
-      <div className="w-1/4 pr-4">
-        <CourseFilter
-          filterOptions={filterOptions}
-          selectedFilters={selectedFilters}
-          onFilterChange={(filters) => setSelectedFilters(filters)}
-        />
+    <div className="w-full">
+      {/* Courses List */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {currentCourses.map((course) => (
+          <div key={course.id} className="p-4 border rounded-lg shadow-lg">
+            <img src={course.imageUrl} alt={course.title} className="mb-4" />
+            <h3 className="text-lg font-semibold">{course.title}</h3>
+            <p>Category: {course.category}</p>
+            <p>Level: {course.level}</p>
+            <p>Price: ${course.price}</p>
+          </div>
+        ))}
       </div>
-      <div className="w-3/4">
-        <div className="grid grid-cols-2 gap-4">
-          {paginatedCourses.map((course:Course) => (
-            <CourseCard courseId='1'/>
-          ))}
-        </div>
-        <div className="mt-4">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
-        </div>
+
+      {/* Pagination */}
+      <div className="mt-4 flex justify-center space-x-2">
+        {Array.from({ length: Math.ceil(filteredCourses.length / coursesPerPage) }, (_, index) => (
+          <button
+            key={index}
+            className={`px-3 py-1 border ${
+              currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'
+            }`}
+            onClick={() => paginate(index + 1)}
+          >
+            {index + 1}
+          </button>
+        ))}
       </div>
     </div>
   );

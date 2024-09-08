@@ -1,6 +1,5 @@
 import "@/styles/globals.css"
 import { Inter as FontSans } from "next/font/google"
-
 import { cn } from "@/lib/utils"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
@@ -21,9 +20,7 @@ export default function RootLayout({ children }:{children: React.ReactNode}) {
         )}
       >
         <main>
-          <Header/>
           {children}
-          <Footer/>
         </main> 
       </body>
     </html>

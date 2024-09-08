@@ -28,5 +28,7 @@ export interface Instructor {
     syllabus: SyllabusItem[];
     reviews: Review[];
     price: number;
+    imageUrl: string;
+    category: string;
   }
   

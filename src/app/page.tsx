@@ -2,9 +2,12 @@
 import Slider from "@/components/Slider";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import FAQWedget from "@/components/FAQWedget";
 import Typewriter from "@/components/TypeWriter";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { useRouter } from "next/router";
 
 const testimonials = [
   {
@@ -33,8 +36,12 @@ const testimonials = [
 const words = ["Practical", "Better", "Web"];
 
 const Page = () => {
+
+
   return (
-    <div>
+    <main>
+      <Header/>
+      <div>
       <div className="px-4 md:!px-6 max-w-[1248px] xl:!mx-auto py-3 relative ">
         <div className="flex-center flex-col-reverse lg:flex-row w-full relative z-10 gap-y-10 lg:!gap-x-10">
           <header className="flex-center flex-col w-full text-center">
@@ -161,7 +168,9 @@ const Page = () => {
         {/* courses */}
         <div className="mt-16">
           <h1 className="heading !pb-0 !mb-3">Most Popular Courses</h1>
-          <p className="text-gray-600">Choose from hundreds of courses from specialist mentors</p>
+          <p className="text-gray-600">
+            Choose from hundreds of courses from specialist mentors
+          </p>
           <Slider />
         </div>
         {/* why stepOne */}
@@ -283,7 +292,9 @@ const Page = () => {
         {/* FAQS */}
         <FAQWedget />
       </div>
-    </div>
+      </div>
+      <Footer/>
+    </main>
   );
 };
 
