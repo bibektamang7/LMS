@@ -1,27 +1,30 @@
-import { Video } from "lucide-react";
 import mongoose, {Schema, Document} from "mongoose"
 
-interface Video extends Document {
-    title: string;
-    courseId: mongoose.ObjectId,
-    videoUrl: string;
-    isChecked: boolean;
-}
 
-const videoSchema: Schema<Video> = new Schema({
-    title: {
-        type: String,
-        required: true,
-    },
-    videoUrl: {
-        type: String,
-        required: true,
-    },
-    isChecked: {
-        type: Boolean,
-        default: false,
-    }
-}, {timestamps: true})
+// TODO:Add video as schema
+// interface Video extends Document {
+//     title: string;
+//     courseId: mongoose.ObjectId,
+//     videoUrl: string;
+//     isChecked: boolean;
+//     videoDescription: string;
+// }
+
+// const videoSchema: Schema<Video> = new Schema({
+//     title: {
+//         type: String,
+//         required: true,
+//     },
+//     videoUrl: {
+//         type: String,
+//         required: true,
+//     },
+//     isChecked: {
+//         type: Boolean,
+//         default: false,
+//     },
+//     videoDescription: String,
+// }, {timestamps: true})
 
 interface Category extends Document{
     title: string;
@@ -37,7 +40,7 @@ const categorySchema: Schema<Category> = new Schema({
 interface Syllabus extends Document{
     title: string;
     description: string;
-    video: Video;
+    video: string;
 }
 
 const syllabusSchema: Schema<Syllabus> = new Schema({
@@ -47,7 +50,7 @@ const syllabusSchema: Schema<Syllabus> = new Schema({
     },
     description: String,
     video: {
-        type: videoSchema,
+        type: String,
         required: true,
     }
 })
@@ -58,14 +61,14 @@ interface Course extends Document {
     description: string;
     syllabus: Syllabus[];
     features: string[];
-    category: Category;
+    category: string;
     level: string;
-    videos: Video[];
     price: number;
     discount: number;
     startIn: Date;
     language: string;
-    duration: string;
+    endDate: Date;
+    thumbnail: String;
 }
 
 const courseSchema: Schema<Course> = new Schema({
@@ -75,6 +78,10 @@ const courseSchema: Schema<Course> = new Schema({
     },
     price: {
         type: Number,
+        required: true,
+    },
+    thumbnail: {
+        type: String,
         required: true,
     },
     discount: {
@@ -98,14 +105,27 @@ const courseSchema: Schema<Course> = new Schema({
             type: String,
         }
     ],
-    category: categorySchema,
+    category: String,
     level: {
         type: String,
         enum: ["beginner", "intermediate", "advanced"],
         default: "beginner",
     },
+    startIn: {
+        type: Date,
+        required: true,
+    },
+    endDate: {
+        type: Date,
+        required: true,
+    },
+    language: {
+        type: String,
+        enum: ["Nepali", "Hindi", "English"],
+        default: "Nepali"
+    }
 }, {timestamps: true})
 
-const CourseModel = mongoose.model<Course>("Course", courseSchema);
+const CourseModel = (mongoose.models.Course as mongoose.Model<Course>) || mongoose.model<Course>("Course", courseSchema);
 
 export default CourseModel;

@@ -1,10 +1,14 @@
 "use client";
-
+import { RootState } from "@/redux/store";
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 const Slider = () => {
+  const courses = useSelector((state: RootState) => state.course.courses)
+  console.log(courses);
+  
   const [currentSlide, setCurrentSlide] = useState(0);
   const totalSlides = 7; // Total number of slides
   const slideWidth = 380; // Adjust this to match your actual slide width
@@ -95,25 +99,25 @@ const Slider = () => {
         onTouchMove={touchMove}
         onTouchEnd={touchEnd}
       >
-        {[...Array(7)].map((_, index) => (
+        {courses.map((course) => (
           <div
-            key={index}
+            key={course._id}
             className="overflow-hidden mt-5 relative !w-[92%] sm:!w-[350px] lg:!w-[380px] !mx-3 lg:!mx-6 rounded-b-[20px] rounded-t-[20px] !min-h-[580px] !h-[580px] shadow-light !shrink-0 flex-col hover:lg-shadow-medium bg-white"
           >
             <div className="flex flex-col justify-between !h-full">
               <div>
                 <Image
-                  src="/images/main.avif"
-                  alt="Course Image"
+                  src={course.thumbnail}
+                  alt={course.courseTitle}
                   width={100}
                   height={50}
                   className="w-full h-[40%]"
                 />
                 <div className="mt-3 mx-5">
                   <div className="flex justify-between">
-                    <Link href="/course/1">
+                    <Link href={`/course/${course._id}`}>
                       <h4 className="hover:text-indigo-600 text-gray-900 text-2xl md:!text-xl leading-[26px] md:!leading-[30px] font-bold line-clamp-2 break-before-all">
-                        Data Science Master Pro 2024
+                        {course.courseTitle}
                       </h4>
                     </Link>
                     {/* <div>
@@ -139,7 +143,7 @@ const Slider = () => {
                           className="object-contain"
                         />
                         <div className="flex flex-wrap gap-x-1">
-                          <p className="text-gray-900 text-xs md:!text-sm leading-[18px] md:!leading-[22px] font-bold">Bibek Tamang</p>
+                          <p className="text-gray-900 text-xs md:!text-sm leading-[18px] md:!leading-[22px] font-bold">{course.instructor.username}</p>
                         </div>
                       </div>
                       <div className="flex items-center justify-start gap-3">
@@ -151,7 +155,7 @@ const Slider = () => {
                           className="object-contain"
                         />
                         <div className="flex flex-wrap gap-x-1">
-                          <p className="text-gray-900 text-xs md:!text-sm leading-[18px] md:!leading-[22px] font-bold">Started on 13 sept 2024</p>
+                          <p className="text-gray-900 text-xs md:!text-sm leading-[18px] md:!leading-[22px] font-bold">Started on { new Date(course.startIn).toLocaleDateString("en-GB",{day:"numeric", month:"short", year:"numeric"})}</p>
                         </div>
                       </div>
                       <div className="flex items-center justify-start gap-3">
@@ -185,7 +189,7 @@ const Slider = () => {
               <div>
                 <div className="flex mx-5 items-center gap-3 py-3 border-t border-gray-200">
                   <h4 className="text-gray-900 text-lg md:!text-xl leading-[26px] md:!leading-[30px] font-semibold">
-                    $ 95.88
+                    RS {course.price}
                   </h4>
                   <p className="text-xs md:!text-sm leading-[18px] md:!leading-[22px] line-through text-stroke-400">
                     114
@@ -200,18 +204,22 @@ const Slider = () => {
         ))}
       </div>
       {/* Slider Navigation Buttons */}
-      <button
+      <Image
+        src="/icons/greaterThan.png"
+        alt="lessThan icon"
+        width={40}
+        height={40}
         onClick={handlePrev}
-        className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-gray-200 text-gray-900 rounded-full p-2 hover:bg-gray-300"
-      >
-        Prev
-      </button>
-      <button
+        className="absolute rotate-180 top-1/2 left-2 transform -translate-y-1/2 bg-gray-200 text-gray-900 rounded-full p-2 hover:bg-gray-300" 
+      />
+      <Image
+        src="/icons/greaterThan.png"
+        alt="greaterThan Icon"
+        width={40}
+        height={40}
         onClick={handleNext}
         className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-gray-200 text-gray-900 rounded-full p-2 hover:bg-gray-300"
-      >
-        Next
-      </button>
+      />
     </div>
   );
 };

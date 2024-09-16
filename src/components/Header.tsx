@@ -1,15 +1,17 @@
 "use client";
-
 import React from "react";
-import { Button } from "./ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import SearchBar from "./ui/SearchBar";
+import { useState } from "react";
+import { useSession } from "next-auth/react";
+import Info from "./widget/Info";
+import { navItem_List } from "../../public/constant";
 
 const Header = () => {
-  const isLoggedIn = false;
+  const { data: session } = useSession();
+
   const [toggleMenu, setToggleMenu] = useState(false);
+  const [toggleProfile, setToggleProfile] = useState(false);
 
   const handleSearch = (query: string) => {
     // TODO:searching functionality
@@ -34,36 +36,14 @@ const Header = () => {
           </Link>
 
           <div className="px-4 md:!px-6 max-w-[1248px] xl:!mx-auto hidden relative py-2 lg:flex gap-2 text-gray-850 flex-wrap scroll-smooth justify-between">
-            <Link
-              href="/"
-              className="cursor-pointer inline-block font-semibold py-[9px] px-[17px] shrink-0"
-            >
-              Courses
-            </Link>
-            <Link
-              href="/"
-              className="cursor-pointer inline-block font-semibold py-[9px] px-[17px] shrink-0"
-            >
-              About Us
-            </Link>
-            <Link
-              href="/"
-              className="cursor-pointer inline-block font-semibold py-[9px] px-[17px] shrink-0"
-            >
-              Support System
-            </Link>
-            <Link
-              href="/"
-              className="cursor-pointer inline-block font-semibold py-[9px] px-[17px] shrink-0"
-            >
-              Become an affiliate
-            </Link>
-            <Link
-              href="/"
-              className="cursor-pointer inline-block font-semibold py-[9px] px-[17px] shrink-0"
-            >
-              Instructors
-            </Link>
+            {navItem_List.map((item) => (
+              <Link
+                href={item.location}
+                className="cursor-pointer inline-block font-semibold py-[9px] px-[17px] shrink-0"
+              >
+                {item.title}
+              </Link>
+            ))}
           </div>
 
           {/* Mobile navigation */}
@@ -100,24 +80,28 @@ const Header = () => {
 
           {/* Desktop navigation */}
           <div className="lg:flex hidden">
-            {isLoggedIn ? (
+            {session?.user ? (
               <div className="flex-center gap-4">
-                <p className="text-gray-900 text-sm md:!text-base leading-[1px] md:!leading-6 font-bold cursor-pointer">
+                <Link href="/my-course" className="text-gray-900 text-sm md:!text-base leading-[1px] md:!leading-6 font-bold cursor-pointer">
                   My Courses
-                </p>
-                <Image
-                  src="/images/mainImg.avif"
-                  alt="profile Image"
-                  width={30}
-                  height={30}
-                  className="w-10 h-10 rounded-full cursor-pointer hover:border-2 hover:border-indigo-200"
-                />
+                </Link>
+                <div>
+                  <Image
+                    src={session?.user.image as string}
+                    alt="profile Image"
+                    width={30}
+                    height={30}
+                    onClick={() => setToggleProfile((prev) => !prev)}
+                    className="w-10 h-10 rounded-full cursor-pointer hover:border-2 hover:border-indigo-200"
+                  />
+                  {toggleProfile && <Info username={session.user.username!} />}
+                </div>
               </div>
             ) : (
               <div>
                 <Link
                   href="/login"
-                  className="button mt-9 self-start w-full lg:!w-fit"
+                  className="button"
                 >
                   Login/Register
                 </Link>
@@ -127,7 +111,7 @@ const Header = () => {
         </div>
         {toggleMenu && (
           <div className="fixed z-50 w-full h-full bg-white left-0 [&>*]:px-4 [&>*]:pt-6 overflow-scroll pb-10 transition-all">
-            {isLoggedIn ? (
+            {session?.user ? (
               <div className="flex-between pb-6 bg-gray-50">
                 <div className="flex items-center gap-x-2">
                   <Image
@@ -142,7 +126,7 @@ const Header = () => {
                       Hey
                     </span>
                     <br />
-                    <span className="font-bold">Bibek</span>
+                    <span className="font-bold">{session.user.username}</span>
                   </div>
                 </div>
                 <Image
@@ -154,51 +138,32 @@ const Header = () => {
                 />
               </div>
             ) : (
-              <Button className="bg-indigo-700">Login / register</Button>
+              <div className="text-center mb-4">
+                <Link
+                  href="/login"
+                  className="button"
+                >
+                  Login/Register
+                </Link>
+              </div>
             )}
             <ul className="list-none w-full !p-0">
-              <li className="flex hover:bg-gray-50 items-center px-4 py-4 select-none">
-                <Link
-                  href="/"
-                  className="inline-block w-full cursor-pointer flex-between"
-                >
-                  <p className="text-gray-900 text-sm md:!text-base leading-[21px] md:!leading-6 font-normal">
-                    Courses
-                  </p>
-                  <Image
-                    src="/icons/forward.png"
-                    alt="forward icon"
-                    width={13}
-                    height={17}
-                    className="object-contain"
-                  />
-                </Link>
-              </li>
-              <li className="flex hover:bg-gray-50 items-center px-4 py-4 select-none">
-                <Link
-                  href="/"
-                  className="inline-block w-full cursor-pointer"
-                >
-                  <p className="text-gray-900 text-sm md:!text-base leading-[21px] md:!leading-6 font-normal">
-                    One Neuron
-                  </p>
-                </Link>
-              </li>
-              <li className="flex hover:bg-gray-50 items-center px-4 py-4 select-none">
-                <Link
-                  href="/"
-                  className="inline-block w-full cursor-pointer"
-                >
-                  <p className="text-gray-900 text-sm md:!text-base leading-[21px] md:!leading-6 font-normal">
-                    Support System
-                  </p>
-                </Link>
-              </li>
+              {navItem_List.map((item) => (
+                <li className="flex hover:bg-gray-50 items-center px-4 py-4 select-none">
+                  <Link
+                    href={item.location}
+                    className="inline-block w-full cursor-pointer flex-between"
+                  >
+                    <p className="text-gray-900 text-sm md:!text-base leading-[21px] md:!leading-6 font-normal">
+                      {item.title}
+                    </p>
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         )}
       </div>
-      {/* <Button className="bg-indigo-700">Login / register</Button> */}
     </nav>
   );
 };

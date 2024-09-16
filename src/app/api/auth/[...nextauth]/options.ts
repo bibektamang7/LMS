@@ -17,10 +17,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         try {
           const user = await UserModel.findOne({
             $or: [
-              {email: credentials.identifer},
-              {username: credentials.identifer},
+              {email: credentials.identifier},
+              {username: credentials.identifier},
             ]
           })
+          console.log(credentials);
+          
           if (!user) {
             throw new Error("User not found.")
           }
@@ -46,6 +48,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token._id = user._id?.toString(); // Convert ObjectId to string
         token.isVerified = user.isVerified;
         token.username = user.username;
+        // token.userType = user.userType;
       }
       return token;
     },
@@ -54,6 +57,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user._id = token._id;
         session.user.isVerified = token.isVerified;
         session.user.username = token.username;
+        // session.user.userType = token.userType;
       }
       return session;
     },

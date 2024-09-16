@@ -11,7 +11,7 @@ export async function sendVerificationEmail(
     console.log(username, verifyCode);
     
     await resend.emails.send({
-      from: 'stepone.com',
+      from: 'Acme <onboarding@resend.dev>',
       to: email,
       subject: 'StepOne Verification Code',
       react: VerificationEmail({ username, otp: verifyCode }),

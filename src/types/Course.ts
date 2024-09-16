@@ -1,34 +1,58 @@
 // src/types/Course.ts
 
-export interface Instructor {
-    name: string;
-    bio: string;
-    avatar: string;
-  }
+
+
+export interface Video {
+  title: string;
+  courseId: string;
+  videoUrl: string;
+  isChecked: boolean;
+  videoDescription: string;
+}
+
+export interface SyllabusItem {
+  title: string;
+  description: string;
+  video: string;
+}
+
+interface Instructor{
+  _id: string;
+  username: string;
   
-  export interface SyllabusItem {
-    week: number;
-    topic: string;
-  }
-  
-  export interface Review {
-    user: string;
-    rating: number;
-    comment: string;
-  }
-  
-  export interface Course {
-    id: string;
-    title: string;
-    description: string;
-    instructor: Instructor;
-    duration: string;
-    level: string;
-    language: string;
-    syllabus: SyllabusItem[];
-    reviews: Review[];
-    price: number;
-    imageUrl: string;
-    category: string;
-  }
-  
+}
+export interface Course {
+  _id?: string;
+  courseTitle: string;
+  instructor: Instructor; 
+  description: string;
+  syllabus?: SyllabusItem[];
+  features?: string[];
+  category: string;
+  level: string;
+  price: number;
+  startIn: string;
+  endsIn: string;
+  language: string;
+  duration: string;
+  thumbnail: string;
+
+}
+
+
+export interface User {
+  _id: string;
+  username: string;
+  email: string;
+  isVerified: boolean;
+  userType: string;
+  expertise: [
+    {
+      type: String;
+      require: true;
+    }
+  ];
+  profile: String;
+  bio: String;
+  enrolledCourses: string[];
+}

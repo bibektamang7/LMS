@@ -5,9 +5,9 @@ export async function GET(request: Request) {
     dbConnect();
     try {
         const url = new URL(request.url);
-
-        const courseTitle = url.searchParams.get('courseName');
-        const course = await CourseModel.findOne({ courseTitle });
+        
+        const courseId = url.searchParams.get('courseId');
+        const course = await CourseModel.findById(courseId).populate('instructor', 'username bio profile expertise');
         if (!course) {
             return Response.json(
                 { success: false, message: "No such course" },
@@ -17,7 +17,7 @@ export async function GET(request: Request) {
         return Response.json(
             {
                 success: true,
-                date: course
+                data: course
             },
             {status: 201},
         )

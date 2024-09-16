@@ -1,14 +1,10 @@
-"use client";
 import Slider from "@/components/Slider";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import FAQWedget from "@/components/FAQWedget";
 import Typewriter from "@/components/TypeWriter";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import { useRouter } from "next/router";
-
+import Container from "@/components/Container";
 const testimonials = [
   {
     name: "Alice Johnson",
@@ -36,14 +32,12 @@ const testimonials = [
 const words = ["Practical", "Better", "Web"];
 
 const Page = () => {
-
-
   return (
-    <main>
-      <Header/>
-      <div>
-      <div className="px-4 md:!px-6 max-w-[1248px] xl:!mx-auto py-3 relative ">
-        <div className="flex-center flex-col-reverse lg:flex-row w-full relative z-10 gap-y-10 lg:!gap-x-10">
+    <Container>
+      <main>
+        <div>
+          <div className="px-4 md:!px-6 max-w-[1248px] xl:!mx-auto py-3 relative ">
+            <div className="flex-center flex-col-reverse lg:flex-row w-full relative z-10 gap-y-10 lg:!gap-x-10">
           <header className="flex-center flex-col w-full text-center">
             <h1 className="text-2xl leading-9 font-bold flex flex-col justify-center lg:!justify-start flex-wrap text-gray-900 lg:!self-start">
               Learning with StepOne made &nbsp;
@@ -60,17 +54,15 @@ const Page = () => {
               </div>
             </h1>
             <h6 className="!text-base md:!text-lg leading-6 md:!leading-[26px] font-light text-gray-850 text-center lg:!text-left mt-4 lg:!w-[90%] lg:!self-start">
-              Take your career to the next level with industry ready programs,
+            Elevate your career with industry-focused programs,
               <br className="hidden xl:!block" />
-              An entire learing ecosystem at your fingertips to make learning
-              fun.
+              Experience a complete learning ecosystem designed for engaging and enjoyable learning.
               <br className="hidden xl:!block" />
-              Choose from a range of tech programs and make your next big career
-              switch.
+              Explore a variety of tech courses and make your next career leap.
             </h6>
             <Link
               href="/courses"
-              className="button mt-9 self-start w-full lg:!w-fit"
+              className="button"
             >
               Explore Courses
             </Link>
@@ -86,7 +78,7 @@ const Page = () => {
           </div>
         </div>
 
-        <div className="flex flex-col sm:!flex-row items-center justify-center lg:!justify-between gap-y-6 pt-8 lg:pt-8 flex-wrap lg:flex-nowrap gap-x-3 relative z-10">
+            <div className="flex flex-col sm:!flex-row items-center justify-center lg:!justify-between gap-y-6 pt-8 lg:pt-8 flex-wrap lg:flex-nowrap gap-x-3 relative z-10">
           <div className="rounded-lg p-[14px] m-2 flex items-center justify-start py-6 px-6 shadow-md bg-white gap-x-4 w-full md:!w-72 lg:!w-[23%] lg:!self-start">
             <Image
               src="/icons/course.png"
@@ -165,16 +157,16 @@ const Page = () => {
           </div>
         </div>
 
-        {/* courses */}
-        <div className="mt-16">
-          <h1 className="heading !pb-0 !mb-3">Most Popular Courses</h1>
-          <p className="text-gray-600">
-            Choose from hundreds of courses from specialist mentors
-          </p>
-          <Slider />
-        </div>
-        {/* why stepOne */}
-        <section className="py-12 bg-white mt-16">
+            {/* courses */}
+            <div className="mt-16">
+              <h1 className="heading !pb-0 !mb-3">Most Popular Courses</h1>
+              <p className="text-gray-600">
+                Choose from hundreds of courses from specialist mentors
+              </p>
+              <Slider />
+            </div>
+            {/* why stepOne */}
+            <section className="py-12 bg-white mt-16">
           <div className="container mx-auto px-6">
             <h2 className="heading">Why Choose Us?</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -245,56 +237,55 @@ const Page = () => {
             </div>
           </div>
         </section>
-        {/* Testimonial */}
-        <section className="py-16 mt-12 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
-                What Our Students Say
-              </h2>
-              <p className="text-lg leading-6 text-gray-500 mt-4">
-                Hear from those who have transformed their careers with our
-                platform.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {testimonials.map((testimonial, index) => (
-                <div
-                  key={index}
-                  className="p-8 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
-                >
-                  <div className="flex items-center mb-6">
-                    <Image
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      width={60}
-                      height={60}
-                      className="w-14 h-14 rounded-full object-cover"
-                    />
-                    <div className="ml-4">
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        {testimonial.name}
-                      </h3>
-                      <p className="text-sm text-gray-500">
-                        {testimonial.role}
-                      </p>
-                    </div>
-                  </div>
-                  <p className="text-medium leading-6 text-gray-500">
-                    {testimonial.testimonial}
+            
+            <section className="py-16 mt-12 bg-gray-50">
+              <div className="container mx-auto px-4">
+                <div className="text-center mb-12">
+                  <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+                    What Our Students Say
+                  </h2>
+                  <p className="text-lg leading-6 text-gray-500 mt-4">
+                    Hear from those who have transformed their careers with our
+                    platform.
                   </p>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {testimonials.map((testimonial, index) => (
+                    <div
+                      key={index}
+                      className="p-8 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
+                    >
+                      <div className="flex items-center mb-6">
+                        <Image
+                          src={testimonial.image}
+                          alt={testimonial.name}
+                          width={60}
+                          height={60}
+                          className="w-14 h-14 rounded-full object-cover"
+                        />
+                        <div className="ml-4">
+                          <h3 className="text-lg font-semibold text-gray-900">
+                            {testimonial.name}
+                          </h3>
+                          <p className="text-sm text-gray-500">
+                            {testimonial.role}
+                          </p>
+                        </div>
+                      </div>
+                      <p className="text-medium leading-6 text-gray-500">
+                        {testimonial.testimonial}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
 
-        {/* FAQS */}
-        <FAQWedget />
-      </div>
-      </div>
-      <Footer/>
-    </main>
+            <FAQWedget />
+          </div>
+        </div>
+      </main>
+    </Container>
   );
 };
 

@@ -11,15 +11,15 @@ const FAQWedget = () => {
               answer="All of our program are designed to suit the need of all candidates."
             />
             <FAQ
-              question="Who are these courses suitable for?"
+              question="What is StepOne?"
               answer="All of our program are designed to suit the need of all candidates."
             />
             <FAQ
-              question="Who are these courses suitable for?"
+              question="How do I contact a counsellor to get additional guidance and career counselling?"
               answer="All of our program are designed to suit the need of all candidates."
             />
             <FAQ
-              question="Who are these courses suitable for?"
+              question="Is responsive learning future proof?"
               answer="All of our program are designed to suit the need of all candidates."
             />
           </div>
