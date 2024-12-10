@@ -1,15 +1,9 @@
+import { DollarSign, Users, Award, TrendingUp } from 'lucide-react'
+
 export const navItem_List = [
   {
     title: "Courses",
     location: "/courses",
-  },
-  {
-    title: "About Us",
-    location: "/about-us",
-  },
-  {
-    title: "Support System",
-    location: "/Support System",
   },
   {
     title: "Become an affiliate",
@@ -45,5 +39,28 @@ export const navigationItems = [
   {
     title: "Settings",
     icon: "/icons/setting.png",
+  },
+];
+
+export const affiliateTopic = [
+  {
+    icon: DollarSign,
+    title: "Competitive Commission",
+    description: "Earn up to 30% commission on each successful referral",
+  },
+  {
+    icon: Users,
+    title: "Large Audience",
+    description: "Tap into our user base of over 100,000 learners",
+  },
+  {
+    icon: Award,
+    title: "Quality Courses",
+    description: "Promote top-rated courses from industry experts",
+  },
+  {
+    icon: TrendingUp,
+    title: "Growth Opportunity",
+    description: "Scale your earnings as our platform expands",
   },
 ];

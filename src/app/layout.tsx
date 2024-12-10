@@ -23,23 +23,23 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head />
-      <AuthProvider>
-        <body
-          className={cn(
-            "min-h-screen bg-background font-sans antialiased",
-            fontSans.variable
-          )}
-        >
+      <body
+        className={cn(
+          "min-h-screen bg-background font-sans antialiased",
+          fontSans.variable
+        )}
+      >
+        <AuthProvider>
           <ReduxProvider>
-            <main>
+            <div className="max-w-[1250px] w-full md:w-[80%] md:mx-auto">
               <Header />
               {children}
-              <Footer />
               <Toaster />
-            </main>
+            </div>
+            <Footer />
           </ReduxProvider>
-        </body>
-      </AuthProvider>
+        </AuthProvider>
+      </body>
     </html>
   );
 }

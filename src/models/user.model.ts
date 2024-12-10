@@ -1,17 +1,12 @@
-import { profile } from "console";
 import mongoose, { Schema, Document } from "mongoose";
-
 // Define the User interface extending Document
 interface User extends Document {
   username: string;
   email: string;
   password: string;
-  emailVerificationCode?: string;  // Make optional for cases where it's not immediately populated
-  emailVerificationExpiry?: Date;  // Same for expiry
-  isVerified: boolean;
-  userType: string;
+  role: string;
   expertise: string[],
-  profile: String,
+  avatar: String,
   bio: String,
   enrolledCourses: mongoose.ObjectId[]
 }
@@ -34,24 +29,12 @@ const userSchema: Schema<User> = new Schema(
       type: String,
       required: true, // Ensure password is hashed before saving to DB
     },
-    userType: {
+    role: {
       type: String,
       enum: ["user", "instructor", "admin"],
       default: "user", // Default userType to "user"
     },
-    emailVerificationCode: {
-      type: String,
-      default: null, // Set default value if not provided
-    },
-    isVerified: {
-      type: Boolean,
-      default: false, // Default to false until email verification
-    },
-    emailVerificationExpiry: {
-      type: Date,
-      default: null, // Same for expiry date
-    },
-    profile: String,
+    avatar: String,
     bio: String,
     expertise: [
       {
@@ -61,11 +44,11 @@ const userSchema: Schema<User> = new Schema(
     enrolledCourses: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Course",
+        ref: () => "Course",
       }
     ]
   },
-  { timestamps: true } // Automatically adds createdAt and updatedAt fields
+  { timestamps: true } 
 );
 
 // Check if the User model exists before defining it

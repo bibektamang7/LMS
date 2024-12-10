@@ -1,39 +1,29 @@
-"use client";
-import React, { useEffect } from "react";
-import { addInstructors } from "@/redux/features/users/userSlice";
-import { useDispatch } from "react-redux";
-import { useGetInstructorsQuery } from "@/redux/query/user";
+import React from "react";
 import InstructorCard from "@/components/InstructorCard";
+import { baseApi } from "@/data/constant";
 
-const page = () => {
-  const {
-    data: instructors,
-    isError,
-    isLoading,
-  } = useGetInstructorsQuery(null);
-  const dispatch = useDispatch();
-
-  console.log(instructors)
-  useEffect(() => {
-      if (instructors) {
-      dispatch(addInstructors(instructors.data));
-    }
-  }, [instructors, dispatch]);
-
-  if (isLoading) {
-    return <h1>Loading...</h1>;
+const fetchInstructors = async () => {
+  const response = await fetch(`${baseApi}/users/get-instructors`, {
+    cache: "no-store"
+  });
+  if (!response.ok) {
+    throw new Error("Failed to fetch instructors");
   }
-  if (isError) {
-    return <h1>Something went wrong...</h1>;
-  }
+  return response.json();
+};
+
+const page = async () => {
+  const { data: instructors } = await fetchInstructors();
+
   return (
     <div className="flex-center flex-wrap gap-4">
-      {instructors?.data.map((instructor:any, index: number) => (
+      {instructors?.map((instructor: any) => (
         <InstructorCard
-          avatar={instructor.profile}
-              bio={instructor.bio}
-              name={instructor.username}
-              expertise={["Good Communicator", "Experienced"]}
+          key={instructor.username}
+          avatar={instructor.avatar}
+          bio={instructor.bio}
+          name={instructor.username}
+          expertise={["Good Communicator", "Experienced"]}
         />
       ))}
     </div>

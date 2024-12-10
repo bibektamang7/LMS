@@ -1,28 +1,33 @@
 import dbConnect from "@/dbConfig/dbConfig";
 import CourseModel from "@/models/course.model";
 import UserModel from "@/models/user.model";
-import mongoose from "mongoose";
-
-
+console.log("user model", UserModel)
 export async function GET(request: Request) {
-  dbConnect();
+  await dbConnect();
   try {
     const url = new URL(request.url);
     const limit = url.searchParams.get("limit") || "6";
     const category = url.searchParams.get("category");
-    const level = url.searchParams.get("level") || 'beginner';
+    const level = url.searchParams.get("level")?.toLowerCase() || 'beginner';
+   
+    const query: Record<string, any> = {};
 
-    // Query the database with filters and limit
-    const courses = await CourseModel.find({
-      $or: [
-        { category },
-        {level}
-      ]
-    }).limit(parseInt(limit)).populate({
+    if(category) {
+      query.category = category;
+    }
+
+    if(level) {
+      query.level = level;
+    }
+
+    const courses = await CourseModel.find(query)
+      .limit(parseInt(limit))
+      .sort({createdAt: -1})
+      .populate({
       path: 'instructor',
       select: 'username'
       });
-  
+
       return Response.json(
           {
               success: true,

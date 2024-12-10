@@ -1,14 +1,14 @@
 import dbConnect from "@/dbConfig/dbConfig";
-import UserModel from "@/models/user.model";
+// import UserModel from "@/models/user.model";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
     await dbConnect();
-
+    const UserModel = require("@/models/user.model").default;
     try {
         
         const instructors = await UserModel.find({
-            userType: "instructor",
+            role: "instructor",
         });
 
         if (!instructors) {

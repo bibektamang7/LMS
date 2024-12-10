@@ -1,33 +1,30 @@
-"use client";
 import Link from "next/link";
-import React from "react";
-import { useGetCourseQuery } from "@/redux/query/course";
-import { useParams } from "next/navigation";
+import React, {FC} from "react";
 import InstructorCard from "@/components/InstructorCard";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import { Course } from "@/types/Course";
-import Loader from "@/components/ui/Loader";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
+import { baseApi } from "@/data/constant";
 
-const page = () => {
-  const user = useSelector((state: RootState) => state.user.user);
-  const params = useParams<{ courseId: string }>();
-  const {
-    data: course,
-    isError,
-    isLoading,
-  } = useGetCourseQuery(params.courseId);
-  if (isError) {
-    return <h1>Error...</h1>;
+const fetchCourse = async (courseId: string) => {
+  const response = await fetch(`${baseApi}/courses/get-course?courseId=${courseId}`, {
+    cache: "no-store",
+    credentials: "include",
+  });
+  if (!response.ok) {
+    throw new Error("Failed to fetch coures");
   }
-  if (isLoading) {
-    return <Loader />;
+  return response.json();
+}
+
+interface PageProps {
+  params: {
+    courseId: string,
   }
-  const handleEnroll = () => {
-    localStorage.setItem("selectedCourse", JSON.stringify(course.data));
-  };
+}
+
+const page: FC<PageProps> = async ({params}) => {
+  
+  const { courseId } = params;
+  const { data: course } = await fetchCourse(courseId);
+  
   return (
     <section className="relative lg:!pb-32 mb-8 overflow-x-clip">
       <div className="bg-gray-800 py-4 md:!py-6">
@@ -44,19 +41,17 @@ const page = () => {
             <div className="flex flex-col gap-4 md:!pt-0 md:!pb-2">
               <div>
                 <h1 className="text-2xl md:!text-4xl leading-9 md:!leading-[44px] font-bold text-white">
-                  {course?.data?.courseTitle}
+                  {course?.courseTitle}
                 </h1>
               </div>
               <p className="text-sm md:!text-base leading-[21px] md:!leading-6 font-normal text-slate-300">
-                {course?.data?.description}
+                {course?.description}
               </p>
               <h4 className="text-lg md:!text-xl leading-[26px] md:!leading-[30px] font-semibold text-white">
-                RS {course?.data?.price || "FREE"}
+                RS {course?.price || "FREE"}
               </h4>
               <div className="flex gap-3 flex-col sm:!flex-row pt-3 md:!pt-3">
-                {user?.enrolledCourses.find(
-                  (item: Course) => item._id === course.data._id
-                ) ? (
+                {course.isEnrolled ? (
                   <Link
                     href="/my-course"
                     className="opacity-100 text-white hover:bg-indigo-500 text-sm px-3 py-[10px] sm:!text-base sm:!px-6 sm:!py-3 font-semibold flex-center gap-2 rounded-lg w-full sm:!w-[200px] bg-indigo-700"
@@ -66,7 +61,6 @@ const page = () => {
                 ) : (
                   <Link
                     href="/payment"
-                    onClick={handleEnroll}
                     className="opacity-100 text-white hover:bg-indigo-500 text-sm px-3 py-[10px] sm:!text-base sm:!px-6 sm:!py-3 font-semibold flex-center gap-2 rounded-lg w-full sm:!w-[200px] bg-indigo-700"
                   >
                     Enroll Now
@@ -82,10 +76,10 @@ const page = () => {
             </div>
           </div>
           <InstructorCard
-            avatar={course.data.instructor.profile}
-            expertise={course.data.instructor.expertise}
-            bio={course.data.instructor.bio}
-            name={course.data.instructor.username}
+            avatar={course.instructor.profile}
+            expertise={course.instructor.expertise}
+            bio={course.instructor.bio}
+            name={course.instructor.username}
           />
         </div>
         <div className="w-full">
@@ -93,7 +87,7 @@ const page = () => {
             <div className="sm:flex sm:gap-6 flex-wrap rounded-lg justify-around sm:py-[44px] p-8">
               <div className="flex flex-col sm:items-center gap-1 mb-6 sm:m-0">
                 <h3 className="text-xl md:!text-2xl leading-[30px] md:!leading-8 font-bold text-gray-900">
-                  {new Date(course?.data?.startIn).toLocaleDateString("en-GB", {
+                  {new Date(course?.startIn).toLocaleDateString("en-GB", {
                     day: "numeric",
                     month: "short",
                     year: "numeric",
@@ -105,7 +99,7 @@ const page = () => {
               </div>
               <div className="flex flex-col sm:items-center gap-1 mb-6 sm:m-0">
                 <h3 className="text-xl md:!text-2xl leading-[30px] md:!leading-8 font-bold text-gray-900">
-                  {course?.data?.language}
+                  {course?.language}
                 </h3>
                 <p className="text-sm md:!text-base leading-[21px] md:!leading-6 font-normal text-[#757575]">
                   Language
@@ -113,7 +107,7 @@ const page = () => {
               </div>
               <div className="flex flex-col sm:items-center gap-1 mb-6 sm:m-0">
                 <h3 className="text-xl md:!text-2xl leading-[30px] md:!leading-8 font-bold text-gray-900">
-                  {new Date(course?.data?.endDate).toLocaleDateString("en-GB", {
+                  {new Date(course?.endDate).toLocaleDateString("en-GB", {
                     day: "numeric",
                     month: "short",
                     year: "numeric",

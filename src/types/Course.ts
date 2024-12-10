@@ -1,5 +1,9 @@
 // src/types/Course.ts
 
+export interface Syllabus {
+  title: string;
+  video: string;
+}
 
 
 export interface Video {
@@ -19,18 +23,18 @@ export interface SyllabusItem {
 interface Instructor{
   _id: string;
   username: string;
-  
+  avatar: string
 }
 export interface Course {
-  _id?: string;
+  _id: string;
   courseTitle: string;
   instructor: Instructor; 
   description: string;
-  syllabus?: SyllabusItem[];
+  syllabus: SyllabusItem[];
   features?: string[];
   category: string;
-  level: string;
-  price: number;
+  level?: string;
+  price?: number;
   startIn: string;
   endsIn: string;
   language: string;

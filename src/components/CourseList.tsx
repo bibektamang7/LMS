@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Course } from "@/types/Course";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,27 +9,12 @@ type CourseListProps = {
 };
 
 const CourseList: React.FC<CourseListProps> = ({ courses }) => {
-  const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
   const coursesPerPage = 6;
-
-  // Filter the courses based on selected category and level
-  useEffect(() => {
-    const filtered = courses.filter(
-      (course) =>
-        (selectedCategory === null || course.category === selectedCategory) &&
-        (selectedLevel === null || course.level === selectedLevel)
-    );
-    setFilteredCourses(filtered);
-    setCurrentPage(1); // Reset to the first page after filtering
-  }, [courses, selectedCategory, selectedLevel]);
-
   // Pagination logic
   const indexOfLastCourse = currentPage * coursesPerPage;
   const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
-  const currentCourses = filteredCourses.slice(
+  const currentCourses = courses.slice(
     indexOfFirstCourse,
     indexOfLastCourse
   );
@@ -39,7 +24,7 @@ const CourseList: React.FC<CourseListProps> = ({ courses }) => {
   return (
     <div className="w-full">
       {/* Courses List */}
-      <div className="flex flex-wrap gap-6">
+      <div className="flex flex-wrap">
         {currentCourses.map((course) => (
           <div
             key={course._id}
@@ -163,13 +148,13 @@ const CourseList: React.FC<CourseListProps> = ({ courses }) => {
       {/* Pagination */}
       <div className="mt-4 flex justify-center space-x-2">
         {Array.from(
-          { length: Math.ceil(filteredCourses.length / coursesPerPage) },
+          { length: Math.ceil(courses.length / coursesPerPage) },
           (_, index) => (
             <button
               key={index}
-              className={`px-3 py-1 border ${
+              className={`px-3 py-1 border rounded-sm ${
                 currentPage === index + 1
-                  ? "bg-blue-500 text-white"
+                  ? "bg-indigo-500 text-white"
                   : "bg-gray-200"
               }`}
               onClick={() => paginate(index + 1)}

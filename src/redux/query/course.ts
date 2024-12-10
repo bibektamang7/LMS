@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const CourseApi = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: '/api/courses' }),  // Assuming API routes are prefixed with /api/courses
+  baseQuery: fetchBaseQuery({ baseUrl: "/api/courses" }), // Assuming API routes are prefixed with /api/courses
   reducerPath: "courseApi",
   endpoints: (builder) => ({
     // Mutation to add a new course
@@ -12,7 +12,7 @@ export const CourseApi = createApi({
         body: courseData,
       }),
     }),
-    
+
     // Mutation to delete a course by ID
     deleteCourse: builder.mutation({
       query: (courseId) => ({
@@ -20,7 +20,7 @@ export const CourseApi = createApi({
         method: "DELETE",
       }),
     }),
-    
+
     // Mutation to update a course by ID
     updateCourse: builder.mutation({
       query: ({ courseId, updates }) => ({
@@ -29,7 +29,7 @@ export const CourseApi = createApi({
         body: updates,
       }),
     }),
-    
+
     // Query to get a specific course by ID
     getCourse: builder.query({
       query: (courseId) => ({
@@ -37,13 +37,23 @@ export const CourseApi = createApi({
         method: "GET",
       }),
     }),
-    
+
     // Query to get all courses with pagination, category, and level filtering
     getCourses: builder.query({
       query: ({ page = 1, limit = 6, category, level }) => ({
         url: `/get-courses`,
         method: "GET",
-        params: { page, limit, category, level },  // Pass pagination and filtering params
+        params: { page, limit, category, level }, // Pass pagination and filtering params
+      }),
+    }),
+    getFilteredCourses: builder.query({
+      query: ({category, level}) => ({
+        url: "/get-courses",
+        method: "GET",
+        params: {
+          category: category || '',
+          level: level || '',
+        },
       }),
     }),
   }),
@@ -56,4 +66,5 @@ export const {
   useUpdateCourseMutation,
   useGetCourseQuery,
   useGetCoursesQuery,
+  useLazyGetFilteredCoursesQuery
 } = CourseApi;

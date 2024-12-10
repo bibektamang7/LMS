@@ -159,12 +159,12 @@ const PaymentComponent: React.FC = () => {
           {/* Selected Payment Method */}
           {selectedPaymentMethod && (
             <div className="mt-6">
-              <p className="text-lg font-semibold text-center">
+              <p className="text-lg font-medium text-center">
                 Selected Payment Method: {selectedPaymentMethod}
               </p>
               <button
                 onClick={handleProceedPayment}
-                className="w-full mx-auto text-center bg-indigo-500 rounded-md py-1 px-2">
+                className="w-full mx-auto text-center text-white hover:bg-indigo-600/90 bg-indigo-600 rounded-md py-2 my-2 px-2">
                 Proceed Payment
               </button>
             </div>

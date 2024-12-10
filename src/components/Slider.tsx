@@ -1,16 +1,13 @@
 "use client";
-import { RootState } from "@/redux/store";
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { Course } from "@/types/Course";
 
-const Slider = () => {
-  const courses = useSelector((state: RootState) => state.course.courses)
-  console.log(courses);
+const Slider = ({courses}: {courses: Course[]}) => {
   
   const [currentSlide, setCurrentSlide] = useState(0);
-  const totalSlides = 7; // Total number of slides
+  const totalSlides = 5; // Total number of slides
   const slideWidth = 380; // Adjust this to match your actual slide width
 
   const sliderRef = useRef<HTMLDivElement>(null);

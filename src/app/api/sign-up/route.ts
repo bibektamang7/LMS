@@ -1,11 +1,10 @@
 import dbConnect from "@/dbConfig/dbConfig";
-import { sendVerificationEmail } from "@/lib/sendVerificationEmail";
-import UserModel from "@/models/user.model";
+// import UserModel from "@/models/user.model";
 import bcrypt from "bcryptjs";
 
 export async function POST(request: Request) {
-  dbConnect();
-
+  await dbConnect();
+  const UserModel = require("@/models/user.model").default;
   try {
 
     const { username, email, password } = await request.json();
@@ -31,33 +30,13 @@ export async function POST(request: Request) {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const expiryDate = new Date();
-    expiryDate.setHours(expiryDate.getHours() + 1);
-    const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
     const newUser = new UserModel({
       username,
       email,
       password: hashedPassword,
-      isVerified: false,
-      emailVerificationCode: verifyCode,
-      emailVerificationExpiry: expiryDate,
     });
     await newUser.save();
 
-    // send verificaiton email
-    const emailResponse = await sendVerificationEmail(
-      email,
-      username,
-      verifyCode
-    );
-    console.log(emailResponse);
-    
-    if (!emailResponse.success) {
-      return Response.json(
-        { success: false, message: emailResponse.message },
-        { status: 500 }
-      );
-    }
     return Response.json(
       {
         success: true,

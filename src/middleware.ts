@@ -1,35 +1,49 @@
-import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
-import { auth } from "./app/api/auth/[...nextauth]/options";
-export const config = {
-  matcher: ["/sign-in", "/sign-up", "/", "/verify/:path*,'/dashboard/:path*','/payment/:path*", '/my-course/:path*','/video/:path*'],
-};
+import { NextRequest, NextResponse } from "next/server";
 
-export default auth(async function middleware(request) {
-  const secret = process.env.AUTH_SECRET || ""
+export default async function middleware(request: NextRequest) {
   
-  const token = await getToken({req: request, secret, salt: '' });
-  console.log(token)
   const url = request.nextUrl;
-
-  if (
-    token &&
-    (url.pathname.startsWith("/login") ||
-      url.pathname.startsWith("/signup") ||
-      url.pathname.startsWith("/verify") ||
-      url.pathname === "/")
-  ) {
+  const path = url.pathname;
+  const token = await getToken({ req: request });
+  const protectedRoutes = ["/dashboard", "/payment", "/video", "/my-course"];
+  if (path === "/api") {
+    console.log("this is in middleware ", request);
+  }
+  
+  if (token && (path.startsWith("/login") || path.startsWith("/signup"))) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  // if (!token &&
-  //   (url.pathname.startsWith("/dashboard") ||
-  //   url.pathname.startsWith('/payment') ||    
-  //   url.pathname.startsWith('/video') ||    
-  //   url.pathname.startsWith('/my-course')     
-  // )) {
-  //   return NextResponse.redirect(new URL("/login", request.url));
-  // }
+  if (!token && protectedRoutes.some(route => path.startsWith(route))) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
 
+  if (
+    token && 
+    path.startsWith("/dashboard") && 
+    token.role !== "admin"
+  ) {
+    return NextResponse.redirect(new URL("/_error", request.url));
+  }
   return NextResponse.next();
-});
+};
+
+export const config = {
+  matcher: [
+    "/",
+    "/login",
+    "/signup",
+    "/dashboard/:path*",
+    "/payment/:path*",
+    "/my-course/:path*",
+    "/video/:path*",
+    // {
+    //   source: "/((?!_next/static|_next/image|favicon.ico).*)",
+    //   missing: [
+    //     { type: "header", key: "next-router-prefetch" },
+    //     { type: "header", key: "purpose", value: "prefetch" },
+    //   ],
+    // }
+  ],
+};

@@ -3,57 +3,21 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import FilterSection from '@/components/FilterSection';
 import CourseList from '@/components/CourseList';
-import axios from 'axios';
-import { Course } from '@/types/Course';
-
-const filterOptions = {
-  categories: ['Development', 'Design', 'Marketing', 'Business', 'Data Science', 'AI'],
-  levels: ['beginner', 'intermediate', 'advanced'],
-};
-
+import { filterOptions } from '@/data/constant';
+import { fetchInitialCourses } from '@/app/page';
 const Courses: React.FC = () => {
-  // const { data: coursesData, isError, isLoading } = useGetCoursesQuery({ page: 1, limit: 12, category: '', level: '' });
+  const [courses, setCourses] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('Development');
+  const [selectedLevel, setSelectedLevel] = useState<string>('Beginner');
+  const getCourses = async () => {
+    const {data: coursesList } = await fetchInitialCourses({ level: selectedLevel, category: selectedCategory });
+    setCourses(coursesList);
+  }
 
-  const [courses, setCourses] = useState<Course[]>([]); // Initialize as an empty array
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [selectedLevel, setSelectedLevel] = useState<string>('');
-
-  // Set the initial courses when the query data is available
-  // useEffect(() => {
-  //   console.log(typeof coursesData?.data)
-  //   if (coursesData && coursesData.data) {
-  //     setCourses(coursesData.data); // Ensure that the data is an array before setting it
-  //   }
-  // }, [coursesData]);
-
-  // API call to fetch filtered courses
-  const fetchFilteredCourses = async (category: string, level: string) => {
-    try {
-      const response = await axios.get('/api/courses/get-courses', {
-        params: {
-          category: category || '',
-          level: level || '',
-        },
-      });
-      setCourses(response.data.data);
-    } catch (error) {
-      console.error('Error fetching courses', error);
-      setCourses([]); // On error, set to an empty array to avoid map errors
-    }
-  };
-
-  // Trigger API call when filters change
   useEffect(() => {
-    fetchFilteredCourses(selectedCategory, selectedLevel);
+    getCourses();
   }, [selectedCategory, selectedLevel]);
 
-  // if (isError) {
-  //   return <h1>Error...</h1>;
-  // }
-
-  // if (isLoading) {
-  //   return <h1>Loading...</h1>;
-  // }
 
   return (
     <div className="container mx-auto py-8">
@@ -93,7 +57,13 @@ const Courses: React.FC = () => {
         
         <div className="w-3/4">
           {/* Ensure CourseList only receives an array */}
-          <CourseList courses={courses} />
+          {courses.length < 1 ? (<>
+            <div className="h-full flex items-center justify-center">
+              No courses available for current filter.
+            </div>
+          </>) : (  
+            <CourseList courses={courses} />
+          )}
         </div>
       </div>
     </div>

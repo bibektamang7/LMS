@@ -9,13 +9,9 @@ import { navItem_List } from "../../public/constant";
 
 const Header = () => {
   const { data: session } = useSession();
-
   const [toggleMenu, setToggleMenu] = useState(false);
   const [toggleProfile, setToggleProfile] = useState(false);
 
-  const handleSearch = (query: string) => {
-    // TODO:searching functionality
-  };
 
   return (
     <nav className="w-full h-[58px] xl:h-[102px] border-b-2">
@@ -38,6 +34,7 @@ const Header = () => {
           <div className="px-4 md:!px-6 max-w-[1248px] xl:!mx-auto hidden relative py-2 lg:flex gap-2 text-gray-850 flex-wrap scroll-smooth justify-between">
             {navItem_List.map((item) => (
               <Link
+                key={item.title}
                 href={item.location}
                 className="cursor-pointer inline-block font-semibold py-[9px] px-[17px] shrink-0"
               >
@@ -82,7 +79,7 @@ const Header = () => {
           <div className="lg:flex hidden">
             {session?.user ? (
               <div className="flex-center gap-4">
-                <Link href="/my-course" className="text-gray-900 text-sm md:!text-base leading-[1px] md:!leading-6 font-bold cursor-pointer">
+                <Link href="/my-courses" className="text-gray-900 text-sm md:!text-base leading-[1px] md:!leading-6 font-bold cursor-pointer">
                   My Courses
                 </Link>
                 <div>
@@ -94,7 +91,7 @@ const Header = () => {
                     onClick={() => setToggleProfile((prev) => !prev)}
                     className="w-10 h-10 rounded-full cursor-pointer hover:border-2 hover:border-indigo-200"
                   />
-                  {toggleProfile && <Info username={session.user.username!} />}
+                  {toggleProfile && <Info username={session.user.username!} isAdmin={ session.user.role === "admin" ? true : false} />}
                 </div>
               </div>
             ) : (

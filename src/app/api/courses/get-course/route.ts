@@ -2,10 +2,9 @@ import dbConnect from "@/dbConfig/dbConfig";
 import CourseModel from "@/models/course.model";
 
 export async function GET(request: Request) {
-    dbConnect();
+    await dbConnect();
     try {
         const url = new URL(request.url);
-        
         const courseId = url.searchParams.get('courseId');
         const course = await CourseModel.findById(courseId).populate('instructor', 'username bio profile expertise');
         if (!course) {

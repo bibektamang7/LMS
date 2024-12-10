@@ -6,6 +6,7 @@ import { TransactionApi } from "./query/transaction";
 import dashboardReducer from "./features/Dashboard/dashboardSlice";
 import userReducer from "./features/users/userSlice";
 import courseReducer from "./features/course/courseSlice";
+
 export const makeStore = () => {
   return configureStore({
     reducer: {

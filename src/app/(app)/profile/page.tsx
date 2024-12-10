@@ -1,13 +1,33 @@
 'use client'
+import { baseApi } from '@/data/constant';
+import { useSession } from 'next-auth/react';
 import React, { useState } from 'react';
 
-const ProfileComponent: React.FC = () => {
-  const [profileImage, setProfileImage] = useState<string>('https://via.placeholder.com/150');
-  const [username, setUsername] = useState<string>('Bibek Tamang');
-  const [email] = useState<string>('tmgbibek777@gmail.com'); // Email is static and cannot be changed
-  const [phoneNumber, setPhoneNumber] = useState<string>('9818031071');
+const deleteUser = async (userId: string) => {
+  try {
+    const res = await fetch(`${baseApi}/users/delete-user`, {
+      method: "DELETE",
+      body: JSON.stringify({ userId })
+    });
+    if (!res.ok) {
+      throw new Error("Failed to delete user");
+    }
+    return res.json();
+  } catch (error) {
+    throw new Error("Something went wrong");
+  }
+}
 
-  // Function to handle profile image change
+const ProfileComponent: React.FC = () => {
+  const session = useSession();
+  if (!session || !session.data) {
+    return <>Login in</>;
+  }
+  const [profileImage, setProfileImage] = useState<string>('https://via.placeholder.com/150');
+  const [username, setUsername] = useState<string>(session.data.user.username);
+  const [email] = useState<string>(session.data.user.email ?? ""); // Email is static and cannot be changed
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+
   const handleProfileImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -16,17 +36,16 @@ const ProfileComponent: React.FC = () => {
     }
   };
 
-  // Function to handle saving the profile
   const handleSaveProfile = () => {
-    // Implement save logic here (e.g., API call)
     alert('Profile saved successfully!');
   };
 
-  // Function to handle account deletion
-  const handleDeleteAccount = () => {
-    // Implement delete logic here (e.g., API call)
+  const handleDeleteAccount = async () => {
     if (confirm('Are you sure you want to delete your account?')) {
-      alert('Account deleted successfully.');
+      const { success } = await deleteUser(session.data.user._id);
+      if (success) {
+        alert("Deleted successfully");
+      }
     }
   };
 
@@ -34,7 +53,6 @@ const ProfileComponent: React.FC = () => {
     <div className="max-w-2xl mx-auto p-6 border rounded-lg">
       <h2 className="text-3xl font-bold mb-6">Your Profile</h2>
 
-      {/* Profile Image */}
       <div className="mb-6">
         <img
           src={profileImage}
@@ -55,7 +73,6 @@ const ProfileComponent: React.FC = () => {
         </div>
       </div>
 
-      {/* Username */}
       <div className="mb-6">
         <label htmlFor="username" className="block text-lg font-semibold mb-2">
           Username
@@ -69,7 +86,6 @@ const ProfileComponent: React.FC = () => {
         />
       </div>
 
-      {/* Email (read-only) */}
       <div className="mb-6">
         <label htmlFor="email" className="block text-lg font-semibold mb-2">
           Email
@@ -83,7 +99,6 @@ const ProfileComponent: React.FC = () => {
         />
       </div>
 
-      {/* Phone Number */}
       <div className="mb-6">
         <label htmlFor="phoneNumber" className="block text-lg font-semibold mb-2">
           Phone Number
@@ -97,7 +112,6 @@ const ProfileComponent: React.FC = () => {
         />
       </div>
 
-      {/* Save Button */}
       <div className="mb-6">
         <button
           onClick={handleSaveProfile}
@@ -107,7 +121,6 @@ const ProfileComponent: React.FC = () => {
         </button>
       </div>
 
-      {/* Delete Account Section */}
       <div className="border-t pt-6">
         <h3 className="text-xl font-semibold mb-4 text-red-600">Delete Account</h3>
         <p className="mb-4">Once you delete your account, there is no going back. Please be certain.</p>

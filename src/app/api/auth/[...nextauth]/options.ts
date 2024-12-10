@@ -1,43 +1,48 @@
-import NextAuth from "next-auth"
-import Credentials from "next-auth/providers/credentials"
-// Your own logic for dealing with plaintext password strings; be careful!
-import bcrypt from "bcryptjs"
-import UserModel from "@/models/user.model"
-import dbConnect from "@/dbConfig/dbConfig"
+import { NextAuthOptions } from "next-auth";
+import Credentials from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
+import UserModel from "@/models/user.model";
+import dbConnect from "@/dbConfig/dbConfig";
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     Credentials({
+      id: "credentials",
+      name: "credentials",
       credentials: {
-        email: {label: "Email", type: "email"},
-        password: {label: "Password", type: "password"},
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
       },
-      authorize: async (credentials: any): Promise<any> => {
-        dbConnect();
+      async authorize(credentials: any): Promise<any> {
+        await dbConnect();
         try {
           const user = await UserModel.findOne({
             $or: [
-              {email: credentials.identifier},
-              {username: credentials.identifier},
-            ]
-          })
+              { email: credentials.identifier },
+              { username: credentials.identifier },
+            ],
+          });
           console.log(credentials);
-          
+
           if (!user) {
-            throw new Error("User not found.")
+            throw new Error("User not found.");
           }
-          
-          if (!user.isVerified) {
-            throw new Error("Please verify your email before logging in");
-          }
-          const isPasswordCorrect = await bcrypt.compare(credentials.password, user.password);
+
+          const isPasswordCorrect = await bcrypt.compare(
+            credentials.password,
+            user.password
+          );
 
           if (!isPasswordCorrect) {
             throw new Error("Incorrect Password");
           }
-          return user;
+          return {
+            _id: user._id.toString(),
+            username: user.username,
+            role: user.role,
+          };
         } catch (error: any) {
-          throw new Error(error)
+          throw new Error(error);
         }
       },
     }),
@@ -45,28 +50,27 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token._id = user._id?.toString(); // Convert ObjectId to string
-        token.isVerified = user.isVerified;
+        token._id = user._id.toString();
         token.username = user.username;
-        // token.userType = user.userType;
+        token.role = user.role;
       }
       return token;
     },
     async session({ session, token }) {
       if (token) {
-        session.user._id = token._id;
-        session.user.isVerified = token.isVerified;
-        session.user.username = token.username;
-        // session.user.userType = token.userType;
+        session.user._id = token._id as string;
+        session.user.username = token.username as string;
+        session.user.role = token.role as string;
       }
       return session;
     },
   },
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60,
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: '/login',
+    signIn: "/login",
   },
-})
+};

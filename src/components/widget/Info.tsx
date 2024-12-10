@@ -3,10 +3,9 @@ import Image from "next/image";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 
-const Info = ({ username }: { username: string }) => {
-  const isAdmin = true;
+const Info = ({ username, isAdmin }: { username: string, isAdmin: boolean }) => {
   return (
-    <div className="absolute bg-white top-14 w-48 -right-[4.8rem] shadow-light z-[9998]">
+    <div className="absolute bg-white top-16 w-48 -right-[1.5rem] rounded-md shadow-light z-[9998]">
       <ul className="[&>li]:mb-3 text-gray-650 [&>li]:cursor-pointer !m-0 menu-dropdown">
         <li className="mx-5 my-2 border-b">
           <span className="text-primary-500 italic font-bold">Hey</span>
@@ -19,7 +18,7 @@ const Info = ({ username }: { username: string }) => {
             alt="course Icon"
             width={25}
             height={25}
-            className="object-contain"
+            className="object-contain overflow-hidden"
           />
           <span>My Courses</span>
         </Link>
@@ -30,7 +29,7 @@ const Info = ({ username }: { username: string }) => {
               alt="course Icon"
               width={25}
               height={25}
-              className="object-contain"
+              className="object-contain overflow-hidden"
             />
             <span>Dashboard</span>
           </Link>
@@ -41,7 +40,7 @@ const Info = ({ username }: { username: string }) => {
             alt="course Icon"
             width={25}
             height={25}
-            className="object-contain"
+            className="object-contain overflow-hidden"
           />
           <span>My Profile</span>
         </Link>
@@ -56,7 +55,7 @@ const Info = ({ username }: { username: string }) => {
             alt="course Icon"
             width={25}
             height={25}
-            className="object-contain"
+            className="object-contain overflow-hidden"
           />
           <span>Logout</span>
         </li>

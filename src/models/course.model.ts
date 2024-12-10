@@ -1,7 +1,5 @@
 import mongoose, {Schema, Document} from "mongoose"
 
-
-// TODO:Add video as schema
 // interface Video extends Document {
 //     title: string;
 //     courseId: mongoose.ObjectId,
@@ -30,12 +28,12 @@ interface Category extends Document{
     title: string;
 }
 
-const categorySchema: Schema<Category> = new Schema({
-    title: {
-        type: String,
-        required: true,
-    },
-})
+// const categorySchema: Schema<Category> = new Schema({
+//     title: {
+//         type: String,
+//         required: true,
+//     },
+// })
 
 interface Syllabus extends Document{
     title: string;
@@ -90,7 +88,7 @@ const courseSchema: Schema<Course> = new Schema({
     },
     instructor: {
         type: Schema.Types.ObjectId,
-        ref: "User",
+        ref: () => "User",
         required: true,
     },
     description: String,
