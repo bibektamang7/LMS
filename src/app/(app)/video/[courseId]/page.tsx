@@ -8,22 +8,9 @@ import { VideoPlaylist } from './components/Video-playlist'
 import { CourseInfo } from './components/Course-info'
 import { CommentsSection } from './components/Comments-section'
 import { RelatedResources } from './components/Related-resources'
-import { baseApi } from '@/data/constant'
+import { fetchCurrentCourseVideo } from '@/lib/api'
 
 
-const fetchCurrentCourseVideo = async (courseId: string) => {
-  try {
-    const res = await fetch(`${baseApi}/courses/videos?courseId=${courseId}`);
-
-    if (!res.ok) {
-      throw new Error("Failed to fetch course videos");
-    }
-
-    return res.json();
-  } catch (error) {
-    throw new Error("Something went wrong!");
-  }
-}
 
 export default async function CoursePage() {
   const param = useParams<{ courseId: string }>();

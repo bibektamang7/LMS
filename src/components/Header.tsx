@@ -1,16 +1,29 @@
 "use client";
-import React from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import Info from "./widget/Info";
-import { navItem_List } from "../../public/constant";
+import { navItem_List } from "@/data/constant";
 
 const Header = () => {
   const { data: session } = useSession();
   const [toggleMenu, setToggleMenu] = useState(false);
   const [toggleProfile, setToggleProfile] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
+   useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+        setToggleProfile(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
 
   return (
@@ -27,6 +40,7 @@ const Header = () => {
               width={45}
               height={45}
               className="object-contain"
+              loading='lazy'
             />
             <p className="logo_text">StepOne</p>
           </Link>
@@ -52,6 +66,7 @@ const Header = () => {
                 width={20}
                 height={20}
                 className="object-contain cursor-pointer"
+                loading='lazy'
               />
               {toggleMenu ? (
                 <Image
@@ -61,6 +76,7 @@ const Header = () => {
                   height={20}
                   className="object-contain cursor-pointer"
                   onClick={() => setToggleMenu((prev) => !prev)}
+                  loading='lazy'
                 />
               ) : (
                 <Image
@@ -69,7 +85,8 @@ const Header = () => {
                   width={20}
                   height={20}
                   className="object-contain cursor-pointer"
-                  onClick={() => setToggleMenu((prev) => !prev)}
+                    onClick={() => setToggleMenu((prev) => !prev)}
+                    loading='lazy'
                 />
               )}
             </div>
@@ -82,7 +99,7 @@ const Header = () => {
                 <Link href="/my-courses" className="text-gray-900 text-sm md:!text-base leading-[1px] md:!leading-6 font-bold cursor-pointer">
                   My Courses
                 </Link>
-                <div>
+                <div ref={profileRef}>
                   <Image
                     src={session?.user.image as string}
                     alt="profile Image"
@@ -90,8 +107,9 @@ const Header = () => {
                     height={30}
                     onClick={() => setToggleProfile((prev) => !prev)}
                     className="w-10 h-10 rounded-full cursor-pointer hover:border-2 hover:border-indigo-200"
+                    loading='lazy'
                   />
-                  {toggleProfile && <Info username={session.user.username!} isAdmin={ session.user.role === "admin" ? true : false} />}
+                  {toggleProfile && <Info setToggle={setToggleProfile} username={session.user.username!} isAdmin={ session.user.role === "admin" ? true : false} />}
                 </div>
               </div>
             ) : (
@@ -117,6 +135,7 @@ const Header = () => {
                     width={40}
                     height={40}
                     className="object-contain"
+                    loading='lazy'
                   />
                   <div>
                     <span className="text-primary-500 italic font-bold">
@@ -132,6 +151,7 @@ const Header = () => {
                   width={15}
                   height={20}
                   className="object-contain"
+                  loading='lazy'
                 />
               </div>
             ) : (

@@ -28,6 +28,7 @@ const Footer = () => {
                     width={50}
                     height={50}
                     className="object-contain rounded-md"
+                    loading='lazy'
                   />
                   <h4 className="text-lg font-bold">StepOne</h4>
                 </Link>

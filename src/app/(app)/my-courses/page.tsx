@@ -1,24 +1,9 @@
 import React from "react";
 import { Course } from "@/types/Course"; // Assuming you have a Course type
 import Link from "next/link";
-import { baseApi } from "@/data/constant";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-
-const fetchEnrolledCourses = async (token: string) => {
-  const res = await fetch(`${baseApi}/courses/enrolled-courses`, {
-    method: "GET",
-    cache: "no-store",
-    headers: {
-      "Authorization": `Bearer ${token}`
-    }
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch enrolled courses");
-  }
-  return res.json();
-}
+import { fetchEnrolledCourses } from "@/lib/api";
 
 
 const MyCourses: React.FC = async () => {

@@ -17,6 +17,7 @@ const CourseCard = ({courseId}:{courseId:string}) => {
             width={14}
             height={14}
             className="object-contain"
+            loading='lazy'
           />
         </div>
       </div>
@@ -29,6 +30,7 @@ const CourseCard = ({courseId}:{courseId:string}) => {
               width={100}
               height={50}
               className="w-full h-[40%]"
+              loading='lazy'
             />
             <div className="mt-3 mx-5 ">
               <div className="flex-between">
@@ -44,6 +46,7 @@ const CourseCard = ({courseId}:{courseId:string}) => {
                     width={20}
                     height={20}
                     className="object-contain"
+                    loading='lazy'
                   />
                 </div>
               </div>
@@ -56,6 +59,7 @@ const CourseCard = ({courseId}:{courseId:string}) => {
                     width={20}
                     height={20}
                     className="object-contain"
+                    loading='lazy'
                   />
                   <p className="text-gray-900 text-xs md:!text-sm leading-[18px] md:!leading-[22px] font-bold">
                     Bibek Tamang

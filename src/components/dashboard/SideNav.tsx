@@ -2,18 +2,17 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { navigationItems } from "../../../public/constant";
+import { navigationItems } from "@/data/constant";
 
-
-function SideNav({selectedNav, setSelectedNav}: {selectedNav: any, setSelectedNav: any}) {
+function SideNav() {
   const theme = "light";
   return (
-    <nav className="lg:w-1/5 p-6 shadow-md flex justify-between flex-col ">
+    <nav className="lg:w-1/5 hidden p-6 shadow-md md:flex justify-between flex-col ">
       <div>
-       
         <ul className="space-y-4">
           {navigationItems.map((item, index) => (
-            <li
+            <Link
+              href={item.redirect}
               key={index}
               className="flex gap-2"
             >
@@ -23,20 +22,14 @@ function SideNav({selectedNav, setSelectedNav}: {selectedNav: any, setSelectedNa
                 width={20}
                 height={20}
                 className="object-contain"
+                loading='lazy'
               />
               <span
-                className={`text-lg cursor-pointer font-[600] leading-[24px] ${
-                  selectedNav === item.title
-                    ? "text-indigo-600"
-                    : "text-slate-400"
-                }`}
-                onClick={() =>
-                  setSelectedNav(`${item.title}`)
-                }
+                className={`text-lg cursor-pointer font-[600] leading-[24px]`}
               >
                 {item.title}
               </span>
-            </li>
+            </Link>
           ))}
         </ul>
       </div>
@@ -54,6 +47,7 @@ function SideNav({selectedNav, setSelectedNav}: {selectedNav: any, setSelectedNa
               width={20}
               height={20}
               className="object-contain"
+              loading='lazy'
             />
             <button className="text-sm font-[600]">Light</button>
           </div>
@@ -69,6 +63,7 @@ function SideNav({selectedNav, setSelectedNav}: {selectedNav: any, setSelectedNa
               width={20}
               height={20}
               className="object-contain"
+              loading='lazy'
             />
             <button className="text-sm font-[600]">Dark</button>
           </div>

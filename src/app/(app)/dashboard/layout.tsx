@@ -1,13 +1,12 @@
 import React from "react";
-import ReduxProvider from "@/redux/Provider";
+import SideNav from "@/components/dashboard/SideNav";
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <>
-      <ReduxProvider>
+    <div className="min-h-[100vh] flex gap-4 py-8">
+        <SideNav/>
         {children}
-      </ReduxProvider>
-    </>
+    </div>
   );
 };
 

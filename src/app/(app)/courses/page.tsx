@@ -4,7 +4,8 @@ import Image from 'next/image';
 import FilterSection from '@/components/FilterSection';
 import CourseList from '@/components/CourseList';
 import { filterOptions } from '@/data/constant';
-import { fetchInitialCourses } from '@/app/page';
+import { fetchInitialCourses } from '@/lib/api';
+
 const Courses: React.FC = () => {
   const [courses, setCourses] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('Development');
@@ -36,6 +37,7 @@ const Courses: React.FC = () => {
                 width={20}
                 height={20}
                 className="object-contain"
+                loading='lazy'
               />
               <span className="font-semibold text-lg">Filter</span>
             </div>

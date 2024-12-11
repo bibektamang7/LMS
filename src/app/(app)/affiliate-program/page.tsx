@@ -3,7 +3,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
-import { affiliateTopic } from "../../../../public/constant"
+import { affiliateTopic } from "@/data/constant"
+
 
 export default function BecomeAffiliatePage() {
   return (

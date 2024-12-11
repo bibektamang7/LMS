@@ -1,18 +1,7 @@
 import Link from "next/link";
 import React, {FC} from "react";
 import InstructorCard from "@/components/InstructorCard";
-import { baseApi } from "@/data/constant";
-
-const fetchCourse = async (courseId: string) => {
-  const response = await fetch(`${baseApi}/courses/get-course?courseId=${courseId}`, {
-    cache: "no-store",
-    credentials: "include",
-  });
-  if (!response.ok) {
-    throw new Error("Failed to fetch coures");
-  }
-  return response.json();
-}
+import { fetchCourse } from "@/lib/api";
 
 interface PageProps {
   params: {

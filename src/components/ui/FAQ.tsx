@@ -24,6 +24,7 @@ const FAQ = ({ question, answer }: { question: string; answer: string }) => {
           width={22}
           height={22}
           className={cn("object-contain rotate-90", isOpen && "-rotate-90")}
+         loading='lazy'
         />
       </div>
       {isOpen && (

@@ -39,7 +39,7 @@
     "react-dom": "^18",
     "react-hook-form": "^7.53.0",
     "react-redux": "^9.1.2",
-    "recharts": "^2.12.7",
+    "recharts": "^2.14.1",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "usehooks-ts": "^3.1.0",

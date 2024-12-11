@@ -12,7 +12,7 @@ const PaymentComponent: React.FC = () => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     string | null
   >(null);
-  const course = JSON.parse(localStorage.getItem('selectedCourse') || '{}');
+  const course = JSON.parse(localStorage.getItem("selectedCourse") || "{}");
   const router = useRouter();
 
   const handlePaymentMethodSelect = (method: string) => {
@@ -23,32 +23,34 @@ const PaymentComponent: React.FC = () => {
       const paymentData = {
         courseId: course._id,
         courseAmount: course.price,
-        userId: session?.user._id
-      }
+        userId: session?.user._id,
+      };
       const { data } = await makePayment(paymentData);
       if (data.success) {
-        window.location.href = data.data; 
+        window.location.href = data.data;
       } else {
-        console.error('Payment initiation failed:', data.message);
+        console.error("Payment initiation failed:", data.message);
       }
     } catch (error) {
-      console.error('Error initiating payment:', error);
+      console.error("Error initiating payment:", error);
     }
-  }
+  };
   return (
     <div>
       <div
         onClick={() => {
-          localStorage.removeItem('selectedCourse')
-          router.back()
+          localStorage.removeItem("selectedCourse");
+          router.back();
         }}
-        className="flex cursor-pointer items-center px-4 mt-4">
+        className="flex cursor-pointer items-center px-4 mt-4"
+      >
         <Image
           src="/icons/greaterThan.png"
           alt="back icon"
           width={20}
           height={20}
           className="object-contain rotate-180"
+          loading="lazy"
         />
         <span className="font-bold text-lg">Back</span>
       </div>
@@ -63,13 +65,12 @@ const PaymentComponent: React.FC = () => {
               width={200}
               height={200}
               className="w-24 h-24 mr-4 object-contain"
+              loading="lazy"
             />
             <div>
               <h3 className="text-xl font-semibold">{course.title}</h3>
               <p>{course.description}</p>
-              <p className="font-bold mt-4">
-                Price: NPR {course.price}
-              </p>
+              <p className="font-bold mt-4">Price: NPR {course.price}</p>
             </div>
           </div>
         </div>
@@ -94,6 +95,7 @@ const PaymentComponent: React.FC = () => {
                 width={100}
                 height={100}
                 className="mx-auto mb-2"
+                loading="lazy"
               />
               <p className="text-center font-semibold">Khalti</p>
             </div>
@@ -113,6 +115,7 @@ const PaymentComponent: React.FC = () => {
                 width={100}
                 height={100}
                 className="mx-auto mb-2"
+                loading='lazy'
               />
               <p className="text-center font-semibold">Esewa</p>
             </div>
@@ -132,6 +135,7 @@ const PaymentComponent: React.FC = () => {
                 width={100}
                 height={100}
                 className="mx-auto mb-2"
+                loading='lazy'
               />
               <p className="text-center font-semibold">ImePay</p>
             </div>
@@ -151,6 +155,7 @@ const PaymentComponent: React.FC = () => {
                 width={50}
                 height={50}
                 className="mx-auto mb-2"
+                loading='lazy'
               />
               <p className="text-center font-semibold">Mobile Banking</p>
             </div>
@@ -164,7 +169,8 @@ const PaymentComponent: React.FC = () => {
               </p>
               <button
                 onClick={handleProceedPayment}
-                className="w-full mx-auto text-center text-white hover:bg-indigo-600/90 bg-indigo-600 rounded-md py-2 my-2 px-2">
+                className="w-full mx-auto text-center text-white hover:bg-indigo-600/90 bg-indigo-600 rounded-md py-2 my-2 px-2"
+              >
                 Proceed Payment
               </button>
             </div>

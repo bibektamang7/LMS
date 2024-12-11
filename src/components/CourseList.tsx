@@ -38,6 +38,7 @@ const CourseList: React.FC<CourseListProps> = ({ courses }) => {
                   width={100}
                   height={50}
                   className="w-full h-[40%]"
+                  loading='lazy'
                 />
                 <div className="mt-3 mx-5">
                   <div className="flex justify-between">
@@ -53,6 +54,7 @@ const CourseList: React.FC<CourseListProps> = ({ courses }) => {
                       width={20}
                       height={20}
                       className="object-contain"
+                      loading='lazy'
                     />
                   </div> */}
                   </div>
@@ -66,6 +68,7 @@ const CourseList: React.FC<CourseListProps> = ({ courses }) => {
                           width={20}
                           height={20}
                           className="object-contain"
+                          loading='lazy'
                         />
                         <div className="flex flex-wrap gap-x-1">
                           <p className="text-gray-900 text-xs md:!text-sm leading-[18px] md:!leading-[22px] font-bold">
@@ -80,6 +83,7 @@ const CourseList: React.FC<CourseListProps> = ({ courses }) => {
                           width={20}
                           height={20}
                           className="object-contain"
+                          loading='lazy'
                         />
                         <div className="flex flex-wrap gap-x-1">
                           <p className="text-gray-900 text-xs md:!text-sm leading-[18px] md:!leading-[22px] font-bold">
@@ -102,6 +106,7 @@ const CourseList: React.FC<CourseListProps> = ({ courses }) => {
                           width={20}
                           height={20}
                           className="object-contain"
+                          loading='lazy'
                         />
                         <div className="flex flex-wrap gap-x-1">
                           <p className="text-gray-900 text-xs md:!text-sm leading-[18px] md:!leading-[22px] font-bold">
@@ -116,6 +121,7 @@ const CourseList: React.FC<CourseListProps> = ({ courses }) => {
                           width={20}
                           height={20}
                           className="object-contain"
+                          loading='lazy'
                         />
                         <div className="flex flex-wrap gap-x-1">
                           <p className="text-gray-900 text-xs md:!text-sm leading-[18px] md:!leading-[22px] font-bold">

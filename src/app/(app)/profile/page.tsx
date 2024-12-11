@@ -1,22 +1,9 @@
 'use client'
-import { baseApi } from '@/data/constant';
 import { useSession } from 'next-auth/react';
 import React, { useState } from 'react';
+import { deleteUser } from '@/lib/api';
 
-const deleteUser = async (userId: string) => {
-  try {
-    const res = await fetch(`${baseApi}/users/delete-user`, {
-      method: "DELETE",
-      body: JSON.stringify({ userId })
-    });
-    if (!res.ok) {
-      throw new Error("Failed to delete user");
-    }
-    return res.json();
-  } catch (error) {
-    throw new Error("Something went wrong");
-  }
-}
+
 
 const ProfileComponent: React.FC = () => {
   const session = useSession();

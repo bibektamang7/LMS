@@ -1,16 +1,7 @@
 import React from "react";
 import InstructorCard from "@/components/InstructorCard";
-import { baseApi } from "@/data/constant";
+import { fetchInstructors } from "@/lib/api";
 
-const fetchInstructors = async () => {
-  const response = await fetch(`${baseApi}/users/get-instructors`, {
-    cache: "no-store"
-  });
-  if (!response.ok) {
-    throw new Error("Failed to fetch instructors");
-  }
-  return response.json();
-};
 
 const page = async () => {
   const { data: instructors } = await fetchInstructors();

@@ -109,6 +109,7 @@ const Slider = ({courses}: {courses: Course[]}) => {
                   width={100}
                   height={50}
                   className="w-full h-[40%]"
+                  loading='lazy'
                 />
                 <div className="mt-3 mx-5">
                   <div className="flex justify-between">
@@ -124,6 +125,7 @@ const Slider = ({courses}: {courses: Course[]}) => {
                         width={20}
                         height={20}
                         className="object-contain"
+                        loading='lazy'
                       />
                     </div> */}
                   </div>
@@ -138,6 +140,7 @@ const Slider = ({courses}: {courses: Course[]}) => {
                           width={20}
                           height={20}
                           className="object-contain"
+                          loading='lazy'
                         />
                         <div className="flex flex-wrap gap-x-1">
                           <p className="text-gray-900 text-xs md:!text-sm leading-[18px] md:!leading-[22px] font-bold">{course.instructor.username}</p>
@@ -150,6 +153,7 @@ const Slider = ({courses}: {courses: Course[]}) => {
                           width={20}
                           height={20}
                           className="object-contain"
+                          loading='lazy'
                         />
                         <div className="flex flex-wrap gap-x-1">
                           <p className="text-gray-900 text-xs md:!text-sm leading-[18px] md:!leading-[22px] font-bold">Started on { new Date(course.startIn).toLocaleDateString("en-GB",{day:"numeric", month:"short", year:"numeric"})}</p>
@@ -162,6 +166,7 @@ const Slider = ({courses}: {courses: Course[]}) => {
                           width={20}
                           height={20}
                           className="object-contain"
+                          loading='lazy'
                         />
                         <div className="flex flex-wrap gap-x-1">
                           <p className="text-gray-900 text-xs md:!text-sm leading-[18px] md:!leading-[22px] font-bold">Recorded video</p>
@@ -174,6 +179,7 @@ const Slider = ({courses}: {courses: Course[]}) => {
                           width={20}
                           height={20}
                           className="object-contain"
+                          loading='lazy'
                         />
                         <div className="flex flex-wrap gap-x-1">
                           <p className="text-gray-900 text-xs md:!text-sm leading-[18px] md:!leading-[22px] font-bold">College Student & working Professional</p>
@@ -208,6 +214,7 @@ const Slider = ({courses}: {courses: Course[]}) => {
         height={40}
         onClick={handlePrev}
         className="absolute rotate-180 top-1/2 left-2 transform -translate-y-1/2 bg-gray-200 text-gray-900 rounded-full p-2 hover:bg-gray-300" 
+        loading='lazy'
       />
       <Image
         src="/icons/greaterThan.png"
@@ -216,6 +223,7 @@ const Slider = ({courses}: {courses: Course[]}) => {
         height={40}
         onClick={handleNext}
         className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-gray-200 text-gray-900 rounded-full p-2 hover:bg-gray-300"
+        loading='lazy'
       />
     </div>
   );
