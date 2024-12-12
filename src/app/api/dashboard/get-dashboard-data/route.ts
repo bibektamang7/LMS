@@ -1,6 +1,5 @@
 import dbConnect from "@/dbConfig/dbConfig";
 import UserModel from "@/models/user.model";
-import CourseModel from "@/models/course.model";
 import PaymentModel from "@/models/payment.model";
 import { NextResponse } from "next/server";
 

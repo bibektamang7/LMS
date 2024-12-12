@@ -49,8 +49,8 @@ export async function GET(request: Request) {
         )
       }
 
-      user.enrolledCourses.push(course._id);
-      await user.save()
+      user?.enrolledCourses.push(course._id as any);
+      await user?.save()
       return Response.json(
           { success: true },
           {status: 200}

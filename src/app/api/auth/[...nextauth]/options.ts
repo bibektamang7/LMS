@@ -37,7 +37,7 @@ export const authOptions: NextAuthOptions = {
             throw new Error("Incorrect Password");
           }
           return {
-            _id: user._id.toString(),
+            _id: user._id,
             username: user.username,
             role: user.role,
           };

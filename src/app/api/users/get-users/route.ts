@@ -21,7 +21,12 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit;
 
     const users = await UserModel.find({}, '-password').skip(skip).limit(limit);
-
+    if (!users) {
+      return NextResponse.json(
+        { success: false, message: "No user found" },
+        {status: 400}
+      )
+    }
     const userData: User[] = users.map((user) => ({
       _id: user._id.toString(),
       name: user.username,

@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 // Define the User interface extending Document
 interface User extends Document {
+  _id: mongoose.Types.ObjectId,
   username: string;
   email: string;
   password: string;
@@ -9,6 +10,8 @@ interface User extends Document {
   avatar: String,
   bio: String,
   enrolledCourses: mongoose.ObjectId[]
+  createdAt: Date,
+  updatedAt: Date,
 }
 
 // Define the schema
