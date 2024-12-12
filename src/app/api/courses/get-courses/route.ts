@@ -1,14 +1,15 @@
+import { NextResponse, NextRequest } from "next/server";
 import dbConnect from "@/dbConfig/dbConfig";
 import CourseModel from "@/models/course.model";
-
-export async function GET(request: Request) {
+console.log("error ka yeta ho");
+export async function GET(request: NextRequest) {
   await dbConnect();
   try {
-    const url = new URL(request.url);
-    const limit = Number(url.searchParams.get("limit") || "6");
-    const page = Number(url.searchParams.get("page") || 1);
-    const category = url.searchParams.get("category");
-    const level = url.searchParams.get("level")?.toLowerCase() || "beginner";
+    const searchParams = request.nextUrl.searchParams;
+    const limit = Number(searchParams.get("limit") || "6");
+    const page = Number(searchParams.get("page") || 1);
+    const category = searchParams.get("category");
+    const level = searchParams.get("level")?.toLowerCase() || "beginner";
 
     const query: Record<string, any> = {};
 
@@ -20,16 +21,44 @@ export async function GET(request: Request) {
       query.level = level;
     }
     const skip = (page - 1) * limit;
-    const courses = await CourseModel.find(query)
-      .skip(skip)
-      .limit(limit)
-      .sort({ createdAt: -1 })
-      .populate({
-        path: "instructor",
-        select: "username",
-      });
+    console.log("erro sahi ho hai sathi");
+    const courses = await CourseModel.aggregate([
+      { $match: query },
+      { $sort: { createdAt: -1 } },
+      { $skip: skip },
+      { $limit: limit },
+      {
+        $lookup: {
+          from: "users", // MongoDB collection name (usually the lowercase plural of your model name)
+          localField: "instructor",
+          foreignField: "_id",
+          as: "instructor",
+        },
+      },
+      { $unwind: "$instructor" }, // Optional: Flatten the array if there's exactly one instructor
+      {
+        $project: {
+          courseTitle: 1,
+          createdAt: 1,
+          description: 1,
+          features: 1,
+          category: 1,
+          level: 1,
+          price: 1,
+          discount: 1,
+          startIn: 1,
+          "instructor.username": 1,
+          language: 1,
+          endDate: 1,
+          thumbnail: 1,
+        },
+      },
+    ]);
 
-    return Response.json(
+    console.log("yeta paxi aako ho error");
+    console.log(courses);
+    
+    return NextResponse.json(
       {
         success: true,
         data: courses,

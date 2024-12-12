@@ -24,13 +24,13 @@ const CourseList: React.FC<CourseListProps> = ({ courses }) => {
   return (
     <div className="w-full">
       {/* Courses List */}
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap gap-8">
         {currentCourses.map((course) => (
           <div
             key={course._id}
-            className="overflow-hidden mt-5 relative !w-[92%] sm:!w-[350px] lg:!w-[380px] !mx-3 lg:!mx-6 rounded-b-[20px] rounded-t-[20px] !min-h-[580px] !h-[580px] shadow-light !shrink-0 flex-col hover:lg-shadow-medium bg-white"
+            className="overflow-hidden mt-5 relative !w-[92%] md:!w-[330px] !mx-3 lg:!mx-6 rounded-b-[20px] rounded-t-[20px] !min-h-[550px] !h-[550px] shadow-light !shrink-0 flex-col hover:lg-shadow-medium bg-white"
           >
-            <div className="flex flex-col justify-between !h-full">
+            <div className="flex flex-1 flex-col justify-between !h-full">
               <div>
                 <Image
                   src={course.thumbnail}

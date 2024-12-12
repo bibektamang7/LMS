@@ -1,4 +1,4 @@
-export const words = ["Practical", "Better", "Web"];
+export const words = ["Practical", "Better", "Fun"];
 
 export const testimonials = [
   {

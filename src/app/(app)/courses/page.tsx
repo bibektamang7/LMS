@@ -8,6 +8,7 @@ import { fetchInitialCourses } from "@/lib/api";
 
 const Courses: React.FC = () => {
   const [courses, setCourses] = useState([]);
+  const [isFilterOn, setIsFilterOn] = useState(true);
   const [selectedCategory, setSelectedCategory] =
     useState<string>("Development");
   const [selectedLevel, setSelectedLevel] = useState<string>("Beginner");
@@ -33,10 +34,13 @@ const Courses: React.FC = () => {
         experienced mentors.
       </h2>
 
-      <div className="flex mt-7 gap-8">
-        <div className="w-1/4 pr-4 shadow-md px-2 py-4 rounded-md">
-          <div className="flex-between mb-2 px-2 border-b-2">
-            <div className="flex-center gap-2">
+      <div className="flex mt-7 gap-8 flex-col lg:flex-row">
+        <div className="lg:w-1/4 pr-4 shadow-md px-2 py-4 rounded-md h-fit">
+          <div className="w-full text-center flex-between mb-2 px-2 border-b-2 hover:cursor-pointer">
+            <div
+              onClick={() => setIsFilterOn((prev) => !prev)}
+              className="flex-center gap-2"
+            >
               <Image
                 src="/icons/filter.png"
                 alt="filter image"
@@ -47,20 +51,23 @@ const Courses: React.FC = () => {
               />
               <span className="font-semibold text-lg">Filter</span>
             </div>
-            <span className="text-sm font-semibold">Clear All</span>
           </div>
-          <FilterSection
-            header="Category"
-            items={filterOptions.categories}
-            selectedFilter={selectedCategory}
-            onSelect={(item) => setSelectedCategory(item)}
-          />
-          <FilterSection
-            header="Level"
-            items={filterOptions.levels}
-            selectedFilter={selectedLevel}
-            onSelect={(item) => setSelectedLevel(item)}
-          />
+          {isFilterOn && (
+            <div className="lg:flex lg:flex-col">
+              <FilterSection
+                header="Category"
+                items={filterOptions.categories}
+                selectedFilter={selectedCategory}
+                onSelect={(item) => setSelectedCategory(item)}
+              />
+              <FilterSection
+                header="Level"
+                items={filterOptions.levels}
+                selectedFilter={selectedLevel}
+                onSelect={(item) => setSelectedLevel(item)}
+              />
+            </div>
+          )}
         </div>
 
         <div className="w-3/4">
