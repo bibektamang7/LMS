@@ -4,11 +4,11 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { useCoursePaymentMutation } from "@/redux/query/transaction";
+import { makePayment } from "@/lib/api";
+
 
 const PaymentComponent: React.FC = () => {
   const { data: session } = useSession();
-  const [makePayment] = useCoursePaymentMutation();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     string | null
   >(null);
@@ -23,11 +23,12 @@ const PaymentComponent: React.FC = () => {
       const paymentData = {
         courseId: course._id,
         courseAmount: course.price,
-        userId: session?.user._id,
+        userId: session?.user._id!,
       };
-      const { data } = await makePayment(paymentData);
-      if (data.success) {
+      const { data, success } = await makePayment(paymentData);
+      if (success) {
         window.location.href = data.data;
+        alert("Payment successful");
       } else {
         console.error("Payment initiation failed:", data.message);
       }

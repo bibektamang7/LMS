@@ -1,44 +1,46 @@
-"use client"
-import React, { useState, useEffect } from 'react';
-import { fetchUsers, deleteUser } from '@/lib/api';
-import { User } from '@/types/User';
+"use client";
+import React, { useState, useEffect, useCallback } from "react";
+import { fetchUsers, deleteUser } from "@/lib/api";
+import { User } from "@/types/User";
 
 const UsersContent: React.FC = () => {
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedRole, setSelectedRole] = useState('All');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedRole, setSelectedRole] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' }>({ key: 'name', direction: 'asc' });
+  const [sortConfig, setSortConfig] = useState<{
+    key: string;
+    direction: "asc" | "desc";
+  }>({ key: "name", direction: "asc" });
 
   const usersPerPage = 7;
+  const getUsers = useCallback(async () => {
+    const { data } = await fetchUsers(usersPerPage, currentPage);
+    let filtered = data.filter(
+      (user: User) =>
+        (selectedRole === "All" || user.role === selectedRole) &&
+        (user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.email.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
 
-  useEffect(() => {
-    const getUsers = async () => {
-      const { data } = await fetchUsers(usersPerPage, currentPage); 
-      let filtered = data.filter(
-        (user: User) =>
-          (selectedRole === 'All' || user.role === selectedRole) &&
-          (user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            user.email.toLowerCase().includes(searchTerm.toLowerCase()))
-      );
-  
-      if (sortConfig.key) {
-        filtered = filtered.sort((a: any, b: any) => {
-          if (a[sortConfig.key as keyof User] < b[sortConfig.key as keyof User]) {
-            return sortConfig.direction === 'asc' ? -1 : 1;
-          }
-          if (a[sortConfig.key as keyof User] > b[sortConfig.key as keyof User]) {
-            return sortConfig.direction === 'asc' ? 1 : -1;
-          }
-          return 0;
-        });
-      }
-  
-      setFilteredUsers(filtered);
-      setCurrentPage(1); 
+    if (sortConfig.key) {
+      filtered = filtered.sort((a: any, b: any) => {
+        if (a[sortConfig.key as keyof User] < b[sortConfig.key as keyof User]) {
+          return sortConfig.direction === "asc" ? -1 : 1;
+        }
+        if (a[sortConfig.key as keyof User] > b[sortConfig.key as keyof User]) {
+          return sortConfig.direction === "asc" ? 1 : -1;
+        }
+        return 0;
+      });
     }
+
+    setFilteredUsers(filtered);
+    setCurrentPage(1);
+  }, [searchTerm, selectedRole, sortConfig, currentPage]);
+  useEffect(() => {
     getUsers();
-  }, [searchTerm, selectedRole, sortConfig]);
+  }, [getUsers]);
 
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
@@ -51,7 +53,7 @@ const UsersContent: React.FC = () => {
   const handleSort = (key: string) => {
     setSortConfig((prev) => ({
       key,
-      direction: prev.direction === 'asc' ? 'desc' : 'asc',
+      direction: prev.direction === "asc" ? "desc" : "asc",
     }));
   };
   const handleDeleteUser = async (userId: string) => {
@@ -59,10 +61,10 @@ const UsersContent: React.FC = () => {
     if (success) {
       alert("User deleted successfully");
     }
-  }
+  };
 
   return (
-    <div className='w-full'>
+    <div className="w-full">
       <h2 className="text-3xl font-bold mb-4">Manage Users</h2>
 
       {/* Search Bar */}
@@ -78,7 +80,12 @@ const UsersContent: React.FC = () => {
 
       {/* Role Filter */}
       <div className="mb-4">
-        <label htmlFor="role" className="font-medium">Filter by Role:</label>
+        <label
+          htmlFor="role"
+          className="font-medium"
+        >
+          Filter by Role:
+        </label>
         <select
           id="role"
           className="ml-2 p-2 border rounded-md"
@@ -98,22 +105,37 @@ const UsersContent: React.FC = () => {
           <tr className="bg-gray-200">
             <th
               className="border border-gray-300 p-2 text-left cursor-pointer"
-              onClick={() => handleSort('name')}
+              onClick={() => handleSort("name")}
             >
-              Name {sortConfig.key === 'name' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
+              Name{" "}
+              {sortConfig.key === "name"
+                ? sortConfig.direction === "asc"
+                  ? "↑"
+                  : "↓"
+                : ""}
             </th>
             <th
               className="border border-gray-300 p-2 text-left cursor-pointer"
-              onClick={() => handleSort('email')}
+              onClick={() => handleSort("email")}
             >
-              Email {sortConfig.key === 'email' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
+              Email{" "}
+              {sortConfig.key === "email"
+                ? sortConfig.direction === "asc"
+                  ? "↑"
+                  : "↓"
+                : ""}
             </th>
             <th className="border border-gray-300 p-2 text-left">Role</th>
             <th
               className="border border-gray-300 p-2 text-left cursor-pointer"
-              onClick={() => handleSort('registrationDate')}
+              onClick={() => handleSort("registrationDate")}
             >
-              Registration Date {sortConfig.key === 'registrationDate' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
+              Registration Date{" "}
+              {sortConfig.key === "registrationDate"
+                ? sortConfig.direction === "asc"
+                  ? "↑"
+                  : "↓"
+                : ""}
             </th>
             <th className="border border-gray-300 p-2 text-left">Actions</th>
           </tr>
@@ -121,19 +143,34 @@ const UsersContent: React.FC = () => {
         <tbody>
           {currentUsers.length > 0 ? (
             currentUsers.map((user) => (
-              <tr key={user._id} className="hover:bg-gray-100">
+              <tr
+                key={user._id}
+                className="hover:bg-gray-100"
+              >
                 <td className="border border-gray-300 p-2">{user.name}</td>
                 <td className="border border-gray-300 p-2">{user.email}</td>
                 <td className="border border-gray-300 p-2">{user.role}</td>
-                <td className="border border-gray-300 p-2">{user.registrationDate}</td>
                 <td className="border border-gray-300 p-2">
-                  <button onClick={() => handleDeleteUser(user._id)} className="ml-4 text-red-500 hover:underline">Delete</button>
+                  {user.registrationDate}
+                </td>
+                <td className="border border-gray-300 p-2">
+                  <button
+                    onClick={() => handleDeleteUser(user._id)}
+                    className="ml-4 text-red-500 hover:underline"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan={5} className="text-center p-4">No users found.</td>
+              <td
+                colSpan={5}
+                className="text-center p-4"
+              >
+                No users found.
+              </td>
             </tr>
           )}
         </tbody>
@@ -145,7 +182,9 @@ const UsersContent: React.FC = () => {
           <button
             key={index}
             className={`px-3 py-1 border ${
-              currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'
+              currentPage === index + 1
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200"
             }`}
             onClick={() => paginate(index + 1)}
           >

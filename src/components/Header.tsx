@@ -166,7 +166,7 @@ const Header = () => {
             )}
             <ul className="list-none w-full !p-0">
               {navItem_List.map((item) => (
-                <li className="flex hover:bg-gray-50 items-center px-4 py-4 select-none">
+                <li key={item.title} className="flex hover:bg-gray-50 items-center px-4 py-4 select-none">
                   <Link
                     href={item.location}
                     className="inline-block w-full cursor-pointer flex-between"

@@ -2,19 +2,17 @@
 import { useSession } from 'next-auth/react';
 import React, { useState } from 'react';
 import { deleteUser } from '@/lib/api';
+import Image from 'next/image';
 
 
 
 const ProfileComponent: React.FC = () => {
   const session = useSession();
-  if (!session || !session.data) {
-    return <>Login in</>;
-  }
   const [profileImage, setProfileImage] = useState<string>('https://via.placeholder.com/150');
-  const [username, setUsername] = useState<string>(session.data.user.username);
-  const [email] = useState<string>(session.data.user.email ?? ""); // Email is static and cannot be changed
+  const [username, setUsername] = useState<string>(session?.data?.user.username ?? "");
+  const [email] = useState<string>(session?.data?.user.email ?? "")
   const [phoneNumber, setPhoneNumber] = useState<string>('');
-
+  
   const handleProfileImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -22,29 +20,35 @@ const ProfileComponent: React.FC = () => {
       setProfileImage(imageUrl);
     }
   };
-
+  
   const handleSaveProfile = () => {
     alert('Profile saved successfully!');
   };
-
+  
   const handleDeleteAccount = async () => {
     if (confirm('Are you sure you want to delete your account?')) {
-      const { success } = await deleteUser(session.data.user._id);
+      const { success } = await deleteUser(session?.data?.user._id || "");
       if (success) {
         alert("Deleted successfully");
       }
     }
   };
-
+  
+  if (!session || !session.data) {
+    return <>Login in</>;
+  }
   return (
     <div className="max-w-2xl mx-auto p-6 border rounded-lg">
       <h2 className="text-3xl font-bold mb-6">Your Profile</h2>
 
       <div className="mb-6">
-        <img
+        <Image
           src={profileImage}
           alt="Profile"
           className="w-32 h-32 rounded-full mx-auto object-cover mb-4"
+          loading='lazy'
+          width={40}
+          height={40}
         />
         <div className="text-center">
           <label htmlFor="profileImageUpload" className="text-blue-500 cursor-pointer">

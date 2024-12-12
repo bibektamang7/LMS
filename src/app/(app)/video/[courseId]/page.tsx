@@ -12,7 +12,7 @@ import { fetchCurrentCourseVideo } from '@/lib/api'
 
 
 
-export default async function CoursePage() {
+export default function CoursePage() {
   const param = useParams<{ courseId: string }>();
   const courseId = param?.courseId;
 

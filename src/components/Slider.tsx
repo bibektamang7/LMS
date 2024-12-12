@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Course } from "@/types/Course";
@@ -17,16 +17,17 @@ const Slider = ({courses}: {courses: Course[]}) => {
   const isDragging = useRef(false);
   const animationRef = useRef<number | null>(null);
 
-  useEffect(() => {
-    setPositionByIndex();
-  }, [currentSlide]);
-
-  const setPositionByIndex = () => {
+  
+  const setPositionByIndex = useCallback(() => {
     currentTranslate.current = currentSlide * -(slideWidth + 24);
     prevTranslate.current = currentTranslate.current;
     setSliderPosition();
-  };
-
+  }, [currentSlide]);
+  
+  useEffect(() => {
+    setPositionByIndex();
+  }, [setPositionByIndex]);
+  
   const setSliderPosition = () => {
     if (sliderRef.current) {
       sliderRef.current.style.transform = `translateX(${currentTranslate.current}px)`;

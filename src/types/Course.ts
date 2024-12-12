@@ -23,7 +23,7 @@ export interface SyllabusItem {
 interface Instructor{
   _id: string;
   username: string;
-  
+  bio: string; 
   avatar: string
 }
 export interface Course {

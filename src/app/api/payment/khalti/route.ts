@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     const formData = JSON.stringify({
       return_url: "http://localhost:3000/api/payment/callback",
       website_url: "http://localhost:3000",
-      amount: courseAmount * 100,
+      amount: Number(courseAmount) * 100,
       purchase_order_id: userId,
       purchase_order_name: courseId,
     });

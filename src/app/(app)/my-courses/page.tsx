@@ -4,6 +4,7 @@ import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { fetchEnrolledCourses } from "@/lib/api";
+import Image from "next/image";
 
 
 const MyCourses: React.FC = async () => {
@@ -27,10 +28,11 @@ const MyCourses: React.FC = async () => {
                   key={course._id}
                   className="border p-4 rounded-md shadow-md"
                 >
-                  <img
+                  <Image
                     src={course.thumbnail}
                     alt={course.courseTitle}
                     className="w-full h-40 object-cover mb-4"
+                    loading="lazy"
                   />
                   <Link href={`/video/${course._id}`} className="text-lg font-bold">{course.courseTitle}</Link>
                   <p className="text-sm md:!text-base leading-[21px] md:!leading-6 font-normal text-[#757575]">

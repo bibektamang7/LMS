@@ -120,8 +120,27 @@ const fetchDashboardInfo = async () => {
     throw new Error("Somethin went wrong");
   }
 }
+const makePayment = async ({courseId, userId, courseAmount}: {courseId: string, userId: string, courseAmount: number}) => {
+  try {
+    const res = await fetch(`${baseApi}/payment/khalti`, {
+      method: "POST",
+      body: JSON.stringify({
+        courseId,
+        userId,
+        courseAmount
+      })
+    });
+    if (!res.ok) {
+      throw new Error("Failed to make payment");
+    }
+    return res.json();
+  } catch (error) {
+    throw new Error("Something went wrong")
+  }
+}
 
 export {
+  makePayment,
   fetchDashboardInfo,
     fetchUsers,
     deleteCourse,

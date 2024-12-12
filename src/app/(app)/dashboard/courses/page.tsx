@@ -1,7 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { openAddCourseWidget } from "@/redux/features/Dashboard/dashboardSlice";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect, useCallback } from "react";
 import { deleteCourse, fetchInitialCourses } from "@/lib/api";
 import { Course } from "@/types/Course";
 import { filterOptions } from "@/data/constant";
@@ -11,32 +9,27 @@ const CoursesContent: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
 
-
   const coursesPerPage = 7;
+  const getCourses = useCallback(async () => {
+    const { data } = await fetchInitialCourses({
+      limit: 7,
+      page: currentPage,
+      category: selectedCategory,
+      level: "All",
+    });
 
-  const dispatch = useDispatch();
+    let filtered = data.filter(
+      (course: Course) =>
+        selectedCategory === "All" || course.category === selectedCategory
+    );
+
+    setFilteredCourses(filtered);
+    setCurrentPage(1);
+  }, [selectedCategory, currentPage]);
 
   useEffect(() => {
-    const getCourses = async () => {
-      const { data } = await fetchInitialCourses({
-        limit: 7,
-        page: currentPage,
-        category: selectedCategory,
-        level: "All"
-      });
-
-      let filtered = data.filter(
-        (course: Course) =>
-          (selectedCategory === "All" ||
-            course.category === selectedCategory) 
-      );
-
-
-      setFilteredCourses(filtered);
-      setCurrentPage(1); 
-    };
     getCourses();
-  }, [selectedCategory]);
+  }, [getCourses]);
 
   const indexOfLastCourse = currentPage * coursesPerPage;
   const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
@@ -50,18 +43,17 @@ const CoursesContent: React.FC = () => {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   const handleCourseDelete = async (courseId: string) => {
-    const {success } = await deleteCourse(courseId);
+    const { success } = await deleteCourse(courseId);
     if (success) {
-      alert("Course Deleted successfully")
+      alert("Course Deleted successfully");
     }
-  }
+  };
 
   return (
     <div className="w-full">
       <div className="flex-between">
         <h2 className="text-3xl font-bold mb-4">Manage Courses</h2>
         <button
-          onClick={() => dispatch(openAddCourseWidget())}
           className="button"
         >
           Add Course
@@ -81,8 +73,13 @@ const CoursesContent: React.FC = () => {
           onChange={(e) => setSelectedCategory(e.target.value)}
         >
           <option value="All">All</option>
-          {filterOptions.categories.map(item => (
-            <option key={item} value={item}>{item}</option>
+          {filterOptions.categories.map((item) => (
+            <option
+              key={item}
+              value={item}
+            >
+              {item}
+            </option>
           ))}
         </select>
       </div>
@@ -90,9 +87,7 @@ const CoursesContent: React.FC = () => {
       <table className="w-full table-auto border-collapse border border-gray-300">
         <thead>
           <tr className="bg-gray-200">
-            <th
-              className="border border-gray-300 p-2 text-left cursor-pointer"
-            >
+            <th className="border border-gray-300 p-2 text-left cursor-pointer">
               Course Title
             </th>
             <th className="border border-gray-300 p-2 text-left">Category</th>
@@ -107,12 +102,17 @@ const CoursesContent: React.FC = () => {
                 key={course._id}
                 className="hover:bg-gray-100"
               >
-                <td className="border border-gray-300 p-2">{course.courseTitle}</td>
+                <td className="border border-gray-300 p-2">
+                  {course.courseTitle}
+                </td>
                 <td className="border border-gray-300 p-2">
                   {course.category}
                 </td>
                 <td className="border border-gray-300 p-2">
-                  <button onClick={() => handleCourseDelete(course._id)} className="ml-4 text-red-500 hover:underline">
+                  <button
+                    onClick={() => handleCourseDelete(course._id)}
+                    className="ml-4 text-red-500 hover:underline"
+                  >
                     Delete
                   </button>
                 </td>

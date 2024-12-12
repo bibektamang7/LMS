@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -15,10 +16,13 @@ const InstructorCard = ({
   return (
     <div className="max-w-sm mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
       <div className="flex items-center px-6 py-4">
-        <img
+        <Image
           className="w-24 h-24 rounded-full object-cover"
           src={avatar}
           alt={name}
+          loading="lazy"
+          width={40}
+          height={40}
         />
         <div className="ml-4">
           <h2 className="text-xl font-semibold text-gray-800">{name}</h2>

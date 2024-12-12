@@ -7,7 +7,7 @@ import {
 } from 'recharts';
 import { fetchDashboardInfo } from '@/lib/api';
 
-const DashboardContent: React.FC = async () => {
+const DashboardContent: React.FC = () => {
   const [data, setData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false)
   useEffect(() => {
