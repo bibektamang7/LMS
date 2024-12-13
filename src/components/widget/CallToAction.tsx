@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "../ui/button";
-
+import Link from "next/link";
 const CallToAction = () => {
   return (
     <section className="text-center">
@@ -15,7 +15,9 @@ const CallToAction = () => {
         size="lg"
         className="mr-4"
       >
-        Explore Courses
+        <Link href={"/courses"}>
+          Explore Courses
+        </Link>
       </Button>
       <Button
         size="lg"

@@ -1,7 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import dbConnect from "@/dbConfig/dbConfig";
 import CourseModel from "@/models/course.model";
-console.log("error ka yeta ho");
 export async function GET(request: NextRequest) {
   await dbConnect();
   try {
@@ -21,7 +20,6 @@ export async function GET(request: NextRequest) {
       query.level = level;
     }
     const skip = (page - 1) * limit;
-    console.log("erro sahi ho hai sathi");
     const courses = await CourseModel.aggregate([
       { $match: query },
       { $sort: { createdAt: -1 } },
@@ -29,13 +27,13 @@ export async function GET(request: NextRequest) {
       { $limit: limit },
       {
         $lookup: {
-          from: "users", // MongoDB collection name (usually the lowercase plural of your model name)
+          from: "users", 
           localField: "instructor",
           foreignField: "_id",
           as: "instructor",
         },
       },
-      { $unwind: "$instructor" }, // Optional: Flatten the array if there's exactly one instructor
+      { $unwind: "$instructor" }, 
       {
         $project: {
           courseTitle: 1,
@@ -55,9 +53,6 @@ export async function GET(request: NextRequest) {
       },
     ]);
 
-    console.log("yeta paxi aako ho error");
-    console.log(courses);
-    
     return NextResponse.json(
       {
         success: true,
